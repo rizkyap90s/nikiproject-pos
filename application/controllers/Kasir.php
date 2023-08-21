@@ -36,7 +36,9 @@ class Kasir extends CI_Controller
             'kat'       => $this->db->get('kategori')->result(),
             'no_bon'	=> 'B00'.$kode_cus,
             'pp'		=> $this->db->get('profil_toko', ['id' => 1])->row(),
-            'halperpage'=> 12
+            'halperpage'=> 12,
+            'user_level'=> $this->session->userdata('ses_level'),
+            'cabang'    => $this->session->userdata('ses_cabang')
         ];
 
         $this->load->view('layout/header', $this->data);
@@ -57,6 +59,13 @@ class Kasir extends CI_Controller
         $grandtotal = $this->input->post('grandtotal', true);
         $kembali    = $this->input->post('kembaliBayar', true);
         $dibayar    = $this->input->post('dibayar', true);
+        //new
+        $cabang     = $this->session->userdata('ses_cabang');
+        $telepon    = "-";
+        $chanel     = $this->input->post('chanel', true);
+        $akun_pembayaran = $this->input->post('chanel', true);
+        $catatan    = $this->input->post('catatan', true);
+        
 
         if (!empty($grandtotal)) {
             $grandtotal = preg_replace('/[^a-zA-Z0-9\']/', '', $grandtotal);
@@ -163,6 +172,11 @@ class Kasir extends CI_Controller
             'date'          => date('Y-m-d'),
             'periode'       => date('Y-m'),
             'year'          => date('Y'),
+            'id_cabang'     => $cabang,
+            'telepon'       => "-",
+            'chanel'        => $chanel,
+            'akun_pembayaran' => $akun_pembayaran,
+            'catatan'       => $catatan,
         );
         $this->db->insert('transaksi', $data_trx);
 

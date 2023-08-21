@@ -65,23 +65,44 @@
                         </div>
                         <div class="table-responsive-1 w-100">
                             <?php 
-                                
-                                if($this->input->get('id')){
-                                    $wr   = ' WHERE id_kategori = '.(int)$this->input->get('id').' ';
-                                    $url  = base_url('menu/dtmenu?id='.(int)$this->input->get('id'));
-                                }else if($this->input->get('cari')){
-                                    $wr   = ' WHERE kode_menu LIKE "%'.$this->input->get('cari').'%" OR nama LIKE "%'.$this->input->get('cari').'%" OR kategori.kategori LIKE "%'.$this->input->get('cari').'%"';
-                                    $url  = base_url('menu/dtmenu?cari='.$this->input->get('cari'));
-                                }else{
-                                    $wr   = '';
-                                    $url  = base_url('menu/dtmenu');
+                                if ($this->input->get('id')) {
+                                    $wr = ' WHERE id_kategori = ' . (int)$this->input->get('id') . ' ';
+                                    $url = base_url('menu/dtmenu?id=' . (int)$this->input->get('id'));
+                                } else if ($this->input->get('cari')) {
+                                    $wr = ' WHERE kode_menu LIKE "%' . $this->input->get('cari') . '%" OR nama LIKE "%' . $this->input->get('cari') . '%" OR kategori.kategori LIKE "%' . $this->input->get('cari') . '%"';
+                                    $url = base_url('menu/dtmenu?cari=' . $this->input->get('cari'));
+                                } else {
+                                    $wr = '';
+                                    $url = base_url('menu/dtmenu');
                                 }
-                                $query = "SELECT kategori.kategori, menu.* FROM menu LEFT JOIN kategori ON menu.id_kategori = kategori.id";	
-                                $total = $this->db->query("$query $wr")->num_rows();  
-                                $pages = ceil($total/$halperpage);
 
-                                if($total == '0'){ echo '<br/><h4>" Tidak ada Menu "</h4><br/>';}
-                            ?>
+
+                                $query = "SELECT kategori.kategori, cabang.cabang, menu.* FROM menu LEFT JOIN kategori ON menu.id_kategori = kategori.id LEFT JOIN cabang ON menu.id_cabang = cabang.id";	
+
+                                if($user_level != "Admin"){
+                                    if (!empty($cabang)) {
+                                        if (!empty($wr)) {
+                                            $query .= $wr . ' AND ';
+                                        } else {
+                                            $query .= ' WHERE ';
+                                        }
+                                        $query .= 'menu.id_cabang = ' . (int)$cabang;
+                                    } 
+                                }
+                                else if (!empty($wr)) {
+                                    $query .= $wr;
+                                }
+                                
+                                $total = $this->db->query($query)->num_rows();  
+                                $pages = ceil($total / $halperpage);
+
+                                if ($total == '0') {
+                                    echo '<br/><h4>" Tidak ada Menu "</h4><br/>';
+                                }
+                                ?>
+
+
+
                             <div id="load-data" class="row-css"></div>
                             <center>
                                 <div id="loading"></div>
@@ -205,6 +226,19 @@
                                         </td>
                                     </tr>
                                     <tr>
+                                        <th>Chanel </th>
+                                        <td>
+                                            <select class="form-control" required name="chanel" id="chanel">
+                                                <option value="" disabled selected> - Pilih Chanel -</option>
+                                                <option>Tunai </option>
+                                                <option>BCA</option>
+                                                <option>BNI</option>
+                                                <option>ShopeePay</option>
+
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <th>Order</th>
                                         <td>
                                             <select class="form-control" required name="pesanan" id="pesanan">
@@ -303,6 +337,16 @@
                                         </td>
                                     </tr>
                                 </tbody>
+                                <tr>
+                                    <th>Catatan</th>
+                                    <td>
+                                        <div class="input-group">
+
+                                            <input type="text" autocomplete="off" class="form-control" name="catatan"
+                                                id="catatan" placeholder="Opsional">
+                                        </div>
+                                    </td>
+                                </tr>
                             </table>
 
                             <button type="submit" id="prosesTransaksi" class="btn btn-primary btn-md btn-block mt-2">
@@ -351,15 +395,7 @@
             <div class="modal-body">
                 <div class="table-responsive">
                     <table id="example2" style="font-size:10pt;" class="table table-bordered table-striped table"
-                        width="100%">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Kode Customer</th>
-                                <th>Nama Customer</th>
-                                <th>HP/WA</th>
-                                <th>Aksi</th>
-                            </tr>
+                        width="100%">Limit
                         </thead>
                         <tbody></tbody>
                     </table>

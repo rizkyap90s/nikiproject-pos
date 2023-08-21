@@ -139,7 +139,7 @@
                         </li>
 
                         <?php if($this->session->userdata('ses_level') == 'Admin'){?>
-                        <li class="nav-item dropdown">
+                        <!-- <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">AKUTANSI</a>
                             <div class="dropdown-menu" aria-labelledby="dropdownId">
@@ -147,7 +147,7 @@
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="<?= base_url('keuangan/lain');?>">Keuangan Lainnya</a>
                             </div>
-                        </li>
+                        </li> -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">LAPORAN</a>

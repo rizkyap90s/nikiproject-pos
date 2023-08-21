@@ -78,6 +78,7 @@ class Menu extends CI_Controller
                     'stok_minim' => $sheetData[$i]['7'],
                     'gambar' => '-',
                     'created_at' => date('Y-m-d H:i:s'),
+                    'id_cabang' => $sheetData[$i]['8'],
                  ];
                 $this->db->insert("menu", $data);
             }
@@ -102,10 +103,18 @@ class Menu extends CI_Controller
         } else {
             $wr     = '';
         }
-
-        $query      = "SELECT kategori.kategori, menu.* FROM menu LEFT JOIN kategori ON menu.id_kategori = kategori.id";
+        
+        $query      = "SELECT kategori.kategori, cabang.cabang, menu.* FROM menu LEFT JOIN kategori ON menu.id_kategori = kategori.id JOIN cabang ON cabang.id = menu.id_cabang";
         $hasil      = $this->db->query($query." $wr ORDER BY nama ASC LIMIT $mulai, $halperpage")->result();
 
+        if ($this->session->userdata('ses_level') != 'Admin'){
+            $getCabang = $this->session->userdata('ses_cabang');
+            $filterCabang = " AND cabang.id = $getCabang ";
+            $hasil      = $this->db->query($query." $wr $filterCabang ORDER BY nama ASC LIMIT $mulai, $halperpage")->result();
+
+
+        }
+        
         $this->data['hasil'] = $hasil;
         $this->load->view('admin/kasir/menu', $this->data);
     }

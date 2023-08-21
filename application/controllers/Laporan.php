@@ -59,6 +59,7 @@ class Laporan extends CI_Controller
             'urlexcel'      => $urlexcel
         ];
 
+        echo "SELECT SUM(grandtotal) as gr, SUM(grandmodal) as gm, SUM(total_qty) as qty FROM transaksi'.$iswhere";
         $this->load->view('layout/header', $this->data);
         $this->load->view('admin/laporan/index', $this->data);
         $this->load->view('layout/footer', $this->data);
@@ -264,6 +265,25 @@ class Laporan extends CI_Controller
 
     public function data_produk()
     {
+// transaksi.created_at,
+// transaksi_produk.no_bon,
+// cabang.cabang,
+// transaksi.atas_nama,
+// customer.hp,
+// login.nama_user,
+// transaksi.pesanan,
+// transaksi.chanel,
+// transaksi.akun_pembayaran,
+// transaksi.status,
+// transaksi.catatan,
+// menu.nama,
+// menu.harga_jual,
+// transaksi_produk.qty,
+// menu.harga_jual as 'jumlah',
+// transaksi.diskon,
+// (jumlah - diskon) as 'grand total'
+
+
         $isAtrue = $this->input->get('a',true);
         $isBtrue = $this->input->get('b',true);
         if ($this->input->method(true)=='POST'):
