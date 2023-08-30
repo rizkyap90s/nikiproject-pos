@@ -49,7 +49,7 @@
                         </form>
                     </div>
                     <div class="card-footer text-center">
-                        Copyright &copy; <?= date('Y');?> POS RESTO |
+                        Copyright &copy; <?= date('Y');?> HONABELLE & CO |
                         <a href="https://www.codekop.com" target="_blank"><b>Codekop POS </b></a>
                     </div>
                 </div>

@@ -1,7 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-echo "HAHAHAHAH".CI_VERSION;
 
 class Home extends CI_Controller
 {

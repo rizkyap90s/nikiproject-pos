@@ -12,7 +12,7 @@ class Info extends CI_Controller
         $this->load->helper('tgl_default');
         $this->load->helper('alert');
         if ($this->session->userdata('masuk_sistem') != true) {
-            $url=base_url('login');
+            $url = base_url('login');
             redirect($url);
         }
     }
@@ -51,7 +51,7 @@ class Info extends CI_Controller
         $upload_foto = $_FILES['gambar']['name'];
         if ($upload_foto) {
             // setting konfigurasi upload
-            $nmfile = "logo_".time();
+            $nmfile = "logo_" . time();
             $config['upload_path'] = './assets/image/';
             $config['allowed_types'] = 'gif|jpg|jpeg|png';
             $config['file_name'] = $nmfile;
@@ -60,11 +60,11 @@ class Info extends CI_Controller
             // upload gambar
             if ($this->upload->do_upload('gambar')) {
                 $result1 = $this->upload->data();
-                $result = array('gambar'=>$result1);
+                $result = array('gambar' => $result1);
                 $data1 = array('upload_data' => $this->upload->data());
                 $this->db->set('driver', $data1['upload_data']['file_name']);
             } else {
-                $this->session->set_flashdata("failed", " Gagal Update Data ! ".$this->upload->display_errors());
+                $this->session->set_flashdata("failed", " Gagal Update Data ! " . $this->upload->display_errors());
                 redirect(base_url("info"));
             }
         } else {

@@ -265,33 +265,15 @@ class Laporan extends CI_Controller
 
     public function data_produk()
     {
-// transaksi.created_at,
-// transaksi_produk.no_bon,
-// cabang.cabang,
-// transaksi.atas_nama,
-// customer.hp,
-// login.nama_user,
-// transaksi.pesanan,
-// transaksi.chanel,
-// transaksi.akun_pembayaran,
-// transaksi.status,
-// transaksi.catatan,
-// menu.nama,
-// menu.harga_jual,
-// transaksi_produk.qty,
-// menu.harga_jual as 'jumlah',
-// transaksi.diskon,
-// (jumlah - diskon) as 'grand total'
-
-
         $isAtrue = $this->input->get('a',true);
         $isBtrue = $this->input->get('b',true);
         if ($this->input->method(true)=='POST'):
-            $query = "SELECT customer.nama, login.nama_user, transaksi.atas_nama, transaksi.pesanan,transaksi.status,transaksi.customer_id, 
+            $query = "SELECT cabang.cabang, customer.hp,login.nama_user, transaksi.created_at,transaksi.grandtotal, transaksi.atas_nama, transaksi.diskon, transaksi.pesanan,transaksi.chanel,transaksi.catatan,transaksi.status,transaksi.customer_id, 
                       transaksi_produk.* FROM transaksi_produk 
                       LEFT JOIN transaksi ON transaksi_produk.no_bon=transaksi.no_bon 
                       LEFT JOIN customer ON transaksi.customer_id = customer.id 
-                      LEFT JOIN login ON transaksi.kasir_id=login.id";
+                      LEFT JOIN login ON transaksi.kasir_id=login.id
+                      LEFT JOIN cabang ON cabang.id=transaksi.id_cabang";
             $search = [
                     'kode_menu',
                     'nama',
@@ -326,11 +308,12 @@ class Laporan extends CI_Controller
     {
         $isAtrue = $this->input->get('a',true);
         $isBtrue = $this->input->get('b',true);
-        $query = "SELECT customer.nama, login.nama_user, transaksi.atas_nama, transaksi.pesanan,transaksi.status,transaksi.customer_id,
+        $query = "SELECT cabang.cabang,customer.hp, customer.nama, login.nama_user, transaksi.atas_nama,transaksi.diskon,transaksi.catatan,transaksi.grandtotal,transaksi.chanel, transaksi.pesanan,transaksi.status,transaksi.customer_id,
                   transaksi_produk.* FROM transaksi_produk 
                   LEFT JOIN transaksi ON transaksi_produk.no_bon=transaksi.no_bon 
                   LEFT JOIN customer ON transaksi.customer_id = customer.id 
-                  LEFT JOIN login ON transaksi.kasir_id=login.id";
+                  LEFT JOIN login ON transaksi.kasir_id=login.id
+                  LEFT JOIN cabang ON cabang.id=transaksi.id_cabang";
 
         if (!empty($isAtrue)) {
             $a = htmlentities($this->input->get('a',true));

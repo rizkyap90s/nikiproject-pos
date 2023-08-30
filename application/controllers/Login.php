@@ -7,20 +7,20 @@ class Login extends CI_Controller
     {
         parent::__construct();
         //validasi jika user belum login
-        $this->data['CI'] =& get_instance();
+        $this->data['CI'] = &get_instance();
         $this->load->helper(array('form', 'url'));
         $this->load->model('M_login');
         $this->load->helper('tgl_default');
         $this->load->helper('alert');
     }
-     
+
     public function index()
     {
         if ($this->session->userdata('masuk_sistem') == true) {
-            $url=base_url('home');
+            $url = base_url('home');
             redirect($url);
         }
-        
+
         $this->data['title_web'] = 'Login';
         $this->load->view('login/index', $this->data);
     }
@@ -42,7 +42,7 @@ class Login extends CI_Controller
                 $this->session->set_userdata('ses_nama', $hasil_login['nama_user']);
                 $this->session->set_userdata('ses_level', $hasil_login['level']);
                 $this->session->set_userdata('ses_cabang', $hasil_login['id_cabang']);
-                $this->session->set_flashdata('success', '<strong>Hai '.$hasil_login['nama_user'].'!</strong> Selamat datang Kembali ..');
+                $this->session->set_flashdata('success', '<strong>Hai ' . $hasil_login['nama_user'] . '!</strong> Selamat datang Kembali ..');
                 redirect(base_url('home'));
             } else {
                 $this->session->set_flashdata('failed', '<strong>Login Gagal,</strong> Periksa Kembali Password Anda !');

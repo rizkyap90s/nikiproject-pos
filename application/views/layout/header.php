@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title><?= $title_web;?> &mdash; POS RESTO</title>
+    <title><?= $title_web;?> &mdash; HONABELLE & CO</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -33,7 +33,7 @@
     <div id="header">
         <nav class="navbar navbar-expand-lg active py-3">
             <div class="container-fluid">
-                <a class="navbar-brand" href="<?= base_url('home');?>"><b>POS RESTO</b></a>
+                <a class="navbar-brand" href="<?= base_url('home');?>"><b>HONABELLE & CO</b></a>
                 <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse"
                     data-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
                     aria-label="Toggle navigation"><i class="fa fa-bars text-dark"></i></button>
@@ -48,7 +48,6 @@
                         <?php }?>
 
 
-                        <?php if($this->session->userdata('ses_level') == 'Admin'){?>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">DATA MASTER</a>
@@ -78,9 +77,21 @@
                                     <i class="fa fa-tags pr-1"></i> Cabang</a>
                                 <?php }?>
 
+                                <?php if($this->session->userdata('ses_level') == 'Admin'){?>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="<?= base_url('kanal');?>">
+                                    <i class="fa fa-tags pr-1"></i> Kanal</a>
+                                <?php }?>
+
+                                <?php if($this->session->userdata('ses_level') == 'Admin'){?>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="<?= base_url('pembayaran');?>">
+                                    <i class="fa fa-tags pr-1"></i> Pembayaran</a>
+                                <?php }?>
+
                             </div>
                         </li>
-                        <?php }?>
+                     
 
 
                         <?php if($this->session->userdata('ses_level') == 'Admin'){?>
@@ -90,6 +101,9 @@
                             <div class="dropdown-menu" aria-labelledby="dropdownId">
                                 <a class="dropdown-item" href="<?= base_url('menu/stok');?>">
                                     <i class="fa fa-cubes pr-1"></i> Entry Stok</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="<?= base_url('menu/transfer_stok');?>">
+                                    <i class="fa fa-cubes pr-1"></i> Transfer Stok</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="<?= base_url('menu/persediaan');?>">
                                     <i class="fa fa-list pr-1"></i> Daftar Stok Menu</a>

@@ -61,7 +61,6 @@ class Kasir extends CI_Controller
         $dibayar    = $this->input->post('dibayar', true);
         //new
         $cabang     = $this->session->userdata('ses_cabang');
-        $telepon    = "-";
         $chanel     = $this->input->post('chanel', true);
         $akun_pembayaran = $this->input->post('chanel', true);
         $catatan    = $this->input->post('catatan', true);
@@ -173,7 +172,6 @@ class Kasir extends CI_Controller
             'periode'       => date('Y-m'),
             'year'          => date('Y'),
             'id_cabang'     => $cabang,
-            'telepon'       => "-",
             'chanel'        => $chanel,
             'akun_pembayaran' => $akun_pembayaran,
             'catatan'       => $catatan,

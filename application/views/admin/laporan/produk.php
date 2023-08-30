@@ -56,22 +56,27 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Kode Menu</th>
-                                <th>Nama Menu</th>
-                                <th>Kategori</th>
-                                <th>Qty</th>
-                                <th>Harga Beli</th>
-                                <th>Harga Jual</th>
+                                <th>Waktu</th>
+                                <th>No Bon</th>
+                                <th>Cabang</th>
                                 <th>Atas Nama</th>
-                                <th>Customer</th>
-                                <th>Kasir</th>
-                                <th>Jenis</th>
+                                <th>Telepon</th>
+                                <th>Nama Kasir</th>
+                                <th>Pesnanan</th>
+                                <th>Kanal</th>
+                                <th>Akun Pembayaran</th>
                                 <th>Status</th>
-                                <th>Tanggal</th>
+                                <th>Catatan</th>
+                                <th>Menu</th>
+                                <th>Harga Jual</th>
+                                <th>Qty</th>
+                                <th>Jumlah</th>
+                                <th>Diskon</th>
+                                <th>Grand Total</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
-                        <tfoot>
+                        <!-- <tfoot>
                             <tr>
                                 <th colspan="4">Total</th>
                                 <th><?= $total->qty;?></th>
@@ -82,7 +87,7 @@
                                     Rp<?= number_format((isset($total->hj) && isset($total->hb)) ? ($total->hj - $total->hb) : 0); ?>,-
                                 </th>
                             </tr>
-                        </tfoot>
+                        </tfoot> -->
                     </table>
                 </div>
             </div>
@@ -177,41 +182,19 @@ $(document).ready(function() {
                 }
             },
             {
-                'data': 'kode_menu'
+                'data': 'created_at'
             },
             {
-                'data': 'nama_menu'
+                'data': 'no_bon'
             },
             {
-                'data': 'kategori'
-            },
-            {
-                'data': 'qty'
-            },
-            {
-                data: 'harga_beli',
-                "render": function(data, type, row, meta) {
-                    return 'Rp' + number_format(row.harga_beli * row.qty) + ',-';
-                }
-            },
-            {
-                data: 'harga_jual',
-                "render": function(data, type, row, meta) {
-                    return 'Rp' + number_format(row.harga_jual * row.qty) + ',-';
-                }
+                'data': 'cabang'
             },
             {
                 'data': 'atas_nama'
             },
             {
-                "data": "nama",
-                "render": function(data, type, row, meta) {
-                    if (row.customer_id == 0) {
-                        return '-';
-                    } else {
-                        return row.nama;
-                    }
-                }
+                'data': 'hp'
             },
             {
                 'data': 'nama_user'
@@ -237,6 +220,12 @@ $(document).ready(function() {
                 }
             },
             {
+                'data': 'chanel'
+            },
+            {
+                'data': 'chanel'
+            },
+            {
                 "data": "status",
                 "render": function(data, type, row, meta) {
                     if (row.status == 'Bayar Nanti') {
@@ -251,8 +240,36 @@ $(document).ready(function() {
                 }
             },
             {
-                'data': 'date'
+                'data': 'catatan'
             },
+            {
+                'data': 'nama_menu'
+            },
+            {
+                'data': 'harga_jual'
+            },
+            {
+                'data': 'qty'
+            },
+            {
+                data: 'harga_jual',
+                "render": function(data, type, row, meta) {
+                    return 'Rp' + number_format(row.harga_jual * row.qty) + ',-';
+                }
+            },
+            {
+                data: 'diskon',
+                "render": function(data, type, row, meta) {
+                    return number_format(row.diskon) + '%';
+                }
+            },
+            {
+                data: 'grandtotal',
+                "render": function(data, type, row, meta) {
+                    return 'Rp' + number_format(row.grandtotal) + ',-';
+                }
+            },
+            
         ],
         "fnDrawCallback": function() {
             $('.portfolio-popup').magnificPopup({

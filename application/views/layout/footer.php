@@ -1,9 +1,6 @@
 <div class="clearfix"></div>
 <div class="footer-second" style="border-radius:0px;clear: both;">
-    <div class="container">Copyright © 2021 POS RESTO |
-        <a href="https://www.codekop.com" style="color:yellow" target="_blank">
-            <b>Codekop POS </b>
-        </a>
+    <div class="container">Copyright © | 2021 HONABELLE & CO
     </div>
 </div>
 <!-- DATATABLES BS 4-->

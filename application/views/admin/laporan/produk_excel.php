@@ -58,45 +58,55 @@ if($this->input->get('cetak') == 'print'){?>
     <?= $periode;?>
     <table id="customers">
         <tr>
-            <th>No</th>
-            <th>Kode Menu</th>
-            <th>Nama Menu</th>
-            <th>Kategori</th>
-            <th>Qty</th>
-            <th>Harga Beli</th>
-            <th>Harga Jual</th>
+            <th>No</th> 
+            <th>Waktu</th>
+            <th>No Bon</th>
+            <th>Cabang</th>
             <th>Atas Nama</th>
-            <th>Customer</th>
-            <th>Kasir</th>
-            <th>Jenis</th>
+            <th>Telepon</th>
+            <th>Nama Kasir</th>
+            <th>Pesnanan</th>
+            <th>Kanal</th>
+            <th>Akun Pembayaran</th>
             <th>Status</th>
-            <th>Tanggal</th>
+            <th>Catatan</th>
+            <th>Menu</th>
+            <th>Harga Jual</th>
+            <th>Qty</th>
+            <th>Jumlah</th>
+            <th>Diskon</th>
+            <th>Grand Total</th>
         </tr>
         <?php $no =1; $hj = 0; $hb = 0; $qty = 0; foreach($transaksi as $r){?>
         <tr>
             <td><?= $no;?></td>
-            <td><?= $r->kode_menu;?></td>
-            <td><?= $r->nama_menu;?></td>
-            <td><?= $r->kategori;?></td>
-            <td><?= $r->qty;?></td>
-            <td><?= $r->harga_beli * $r->qty;?></td>
-            <td><?= $r->harga_jual * $r->qty;?></td>
+            <td><?= $r->created_at;?></td>
+            <td><?= $r->no_bon;?></td>
+            <td><?= $r->cabang;?></td>
             <td><?= $r->atas_nama;?></td>
-            <td><?= $r->customer_id == 0 ? '-' : $r->nama;?></td>
+            <td><?= $r->hp;?></td>
             <td><?= $r->nama_user;?></td>
             <td><?= $r->pesanan;?></td>
+            <td><?= $r->chanel;?></td>
+            <td><?= $r->chanel;?></td>
             <td><?= $r->status;?></td>
-            <td><?= $r->date;?></td>
+            <td><?= $r->catatan;?></td>
+            <td><?= $r->nama_menu;?></td>
+            <td><?= $r->harga_jual;?></td>
+            <td><?= $r->qty;?></td>
+            <td><?= $r->harga_jual * $r->qty;?></td>
+            <td><?= $r->diskon;?></td>
+            <td><?= $r->grandtotal;?></td>
         </tr>
         <?php $no++; $hj += $r->harga_jual * $r->qty; $hb += $r->harga_beli * $r->qty; $qty += $r->qty; }?>
-        <tr>
-            <th colspan="4">Total</th>
+        <!-- <tr>
+            <th colspan="13">Total</th>
+            <th>Rp<?= number_format($hj ?? 0);?></th>
             <th><?= $qty;?></th>
-            <th>Rp<?= number_format($hb ?? 0);?></th>
             <th>Rp<?= number_format($hj ?? 0);?></th>
             <th>Keuntungan </th>
             <th colspan="5"> Rp<?= number_format(($hj-$hb) ?? 0);?></th>
-        </tr>
+        </tr> -->
     </table>
 </body>
 

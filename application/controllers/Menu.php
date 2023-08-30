@@ -223,6 +223,90 @@ class Menu extends CI_Controller
         }
     }
 
+    public function transfer_stok()
+    {
+        if ($this->input->get('id')) {
+            $this->data = [
+                'title_web'  => 'Transfer Stok',
+                'tipe'       => 'edit',
+                'edit'       => $this->db->query("SELECT menu.*, cabang.cabang FROM menu JOIN cabang ON cabang.id = menu.id_cabang WHERE menu.id = ?", array($this->input->get('id')) )->row(),
+            ];
+        } else {
+            $this->data = [
+                'title_web'  => 'Transfer Stok',
+                'tipe'       => ''
+            ];
+        }
+        
+        $this->load->view('layout/header', $this->data);
+        $this->load->view('admin/menu/transfer_stok', $this->data);
+        $this->load->view('layout/footer', $this->data);
+    }
+
+    public function transferStock()
+    {
+        $from_menu_id = (int)$this->input->post("from_menu_id");
+        $to_menu_id = (int)$this->input->post("to_menu_id");
+        $quantity = (int)$this->input->post("quantity");
+    
+        $this->form_validation->set_rules("from_menu_id", "From Menu ID", "required");
+        $this->form_validation->set_rules("to_menu_id", "To Menu ID", "required");
+        $this->form_validation->set_rules("quantity", "Quantity", "required|greater_than[0]");
+    
+        if ($this->form_validation->run() != false) {
+            $from_menu = $this->db->get_where("menu", ["id" => $from_menu_id])->row();
+            $to_menu = $this->db->get_where("menu", ["id" => $to_menu_id])->row();
+    
+            if (!$from_menu || !$to_menu) {
+                $this->session->set_flashdata("failed", "Invalid Menu ID");
+                redirect(base_url("menu/t"));
+            }
+    
+            if ($from_menu->stok < $quantity) {
+                $this->session->set_flashdata("failed", "Insufficient stock for transfer");
+                redirect(base_url("menu/transfer_stok"));
+            }
+    
+            $this->db->trans_start();
+    
+            $data_r = [
+                'menu_id'    => $from_menu_id,
+                'stok_awal'  => $from_menu->stok,
+                'stok_akhir' => $from_menu->stok - $quantity,
+                'date'       => date('Y-m-d'),
+                'periode'    => date('Y-m')
+            ];
+            $this->db->insert("menu_stok", $data_r);
+    
+            $data_from = [
+                'stok' => $from_menu->stok - $quantity,
+            ];
+            $this->db->where("id", $from_menu_id);
+            $this->db->update("menu", $data_from);
+    
+            $data_to = [
+                'stok' => $to_menu->stok + $quantity,
+            ];
+            $this->db->where("id", $to_menu_id);
+            $this->db->update("menu", $data_to);
+    
+            $this->db->trans_complete();
+    
+            if ($this->db->trans_status() === false) {
+                $this->session->set_flashdata("failed", "Failed to transfer stock");
+            } else {
+                $this->session->set_flashdata("success", "Successfully transferred stock!");
+            }
+    
+            redirect(base_url("menu/transfer_stok"));
+        } else {
+            $this->session->set_flashdata("failed", "Failed to transfer stock. " . validation_errors());
+            redirect(base_url("menu/transfer_stok"));
+        }
+    }
+
+    
+
     public function tambah()
     {
         $kode = $this->db->query("SELECT * FROM menu ORDER BY id DESC LIMIT 1");

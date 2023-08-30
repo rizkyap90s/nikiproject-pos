@@ -223,27 +223,28 @@ $(document).ready(function() {
 });
 $('#stok_jml').hide();
 $('#example1 tbody').on('click', '.pilih_cek', function() {
-    var id = $(this).attr('data-id');
-    $.ajax({
-        type: 'POST',
-        url: '<?= base_url('menu/get_menu');?>',
-        data: {
-            'id': id
-        },
-        dataType: 'json',
-        success: function(data) {
-            if (data.errors != null) {
-                console.log(data.errors);
-            } else {
-                $('#kode').val(data[0].id);
-                $('#nama_menu').val(data[0].nama);
-                $('#stok').val(data[0].stok);
-                $('#stoka').val(data[0].stok);
-                $('#stok_minim').val(data[0].stok_minim);
-                $('#modelId').modal('hide');
-                $('#stok_jml').show();
+        var id = $(this).attr('data-id');
+        $.ajax({
+            type: 'POST',
+            url: '<?= base_url('menu/get_menu');?>',
+            data: {
+                'id': id
+            },
+            dataType: 'json',
+            success: function(data) {
+                console.log(data); // Add this line to log the received data
+                if (data.errors != null) {
+                    console.log(data.errors);
+                } else {
+                    $('#kode').val(data[0].id);
+                    $('#nama_menu').val(data[0].nama);
+                    $('#stok').val(data[0].stok);
+                    $('#stoka').val(data[0].stok);
+                    $('#stok_minim').val(data[0].stok_minim);
+                    $('#modelId').modal('hide');
+                    $('#stok_jml').show();
+                }
             }
-        }
+        });
     });
-});
 </script>
