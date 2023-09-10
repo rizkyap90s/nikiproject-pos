@@ -38,8 +38,13 @@ class Kasir extends CI_Controller
             'pp'		=> $this->db->get('profil_toko', ['id' => 1])->row(),
             'halperpage'=> 12,
             'user_level'=> $this->session->userdata('ses_level'),
-            'cabang'    => $this->session->userdata('ses_cabang')
+            'cabang'    => $this->session->userdata('ses_cabang'),
+            'listkanal'    => $this->db->get('kanal')->result(),
+            'listpembayaran'    => $this->db->get('pembayaran')->result()
         ];
+
+
+
 
         $this->load->view('layout/header', $this->data);
         $this->load->view('admin/kasir/index', $this->data);
@@ -61,8 +66,8 @@ class Kasir extends CI_Controller
         $dibayar    = $this->input->post('dibayar', true);
         //new
         $cabang     = $this->session->userdata('ses_cabang');
-        $chanel     = $this->input->post('chanel', true);
-        $akun_pembayaran = $this->input->post('chanel', true);
+        $kanal     = $this->input->post('id_kanal', true);
+        $pembayaran = $this->input->post('id_pembayaran', true);
         $catatan    = $this->input->post('catatan', true);
         
 
@@ -172,8 +177,8 @@ class Kasir extends CI_Controller
             'periode'       => date('Y-m'),
             'year'          => date('Y'),
             'id_cabang'     => $cabang,
-            'chanel'        => $chanel,
-            'akun_pembayaran' => $akun_pembayaran,
+            'id_kanal'        => $kanal,
+            'id_pembayaran' => $pembayaran,
             'catatan'       => $catatan,
         );
         $this->db->insert('transaksi', $data_trx);

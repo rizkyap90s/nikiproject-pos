@@ -20,9 +20,9 @@
                     <div class="card-body p-2">
                         <div class="row">
                             <div class="col-sm-6">
-                                <div class="dropdown open mb-3">
+                                <div class="dropdown mb-3">
                                     <button class="btn btn-secondary btn-block dropdown-toggle" type="button"
-                                        id="triggerId" data-toggle="dropdown" aria-haspopup="true"
+                                        id="triggerId" data-toggle="dropdown"
                                         aria-expanded="false">
                                         <?php 
                                             $getNm = $this->input->get('nm');
@@ -33,7 +33,7 @@
                                             }
                                         ?>
                                     </button>
-                                    <div class="dropdown-menu" style="width:100%" aria-labelledby="triggerId">
+                                    <div class="dropdown-menu" style="width:10%" aria-labelledby="triggerId">
                                         <?php foreach($kat as $r){?>
                                         <a class="dropdown-item"
                                             href="<?= base_url('kasir?id='.$r->id.'&nm='.$r->kategori);?>">
@@ -45,6 +45,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-sm-6 mb-3">
                                 <form method="get" action="">
                                     <div class="input-group">
@@ -61,7 +62,7 @@
                                         </div>
                                     </div>
                                 </form>
-                            </div>
+                            </div>                           
                         </div>
                         <div class="table-responsive-1 w-100">
                             <?php 
@@ -69,7 +70,7 @@
                                     $wr = ' WHERE id_kategori = ' . (int)$this->input->get('id') . ' ';
                                     $url = base_url('menu/dtmenu?id=' . (int)$this->input->get('id'));
                                 } else if ($this->input->get('cari')) {
-                                    $wr = ' WHERE kode_menu LIKE "%' . $this->input->get('cari') . '%" OR nama LIKE "%' . $this->input->get('cari') . '%" OR kategori.kategori LIKE "%' . $this->input->get('cari') . '%"';
+                                    $wr = ' WHERE kode_menu LIKE "%' . $this->input->get('cari') . '%" OR nama LIKE "%' . $this->input->get('cari') . '%"  OR  kanal LIKE "%' . $this->input->get('cari') . '%"   OR kategori.kategori LIKE "%' . $this->input->get('cari') . '%"';
                                     $url = base_url('menu/dtmenu?cari=' . $this->input->get('cari'));
                                 } else {
                                     $wr = '';
@@ -77,7 +78,7 @@
                                 }
 
 
-                                $query = "SELECT kategori.kategori, cabang.cabang, menu.* FROM menu LEFT JOIN kategori ON menu.id_kategori = kategori.id LEFT JOIN cabang ON menu.id_cabang = cabang.id";	
+                                $query = "SELECT kategori.kategori, menu.*, kanal.kanal, cabang.cabang FROM menu JOIN kategori ON menu.id_kategori = kategori.id JOIN kanal ON menu.id_kanal = kanal.id JOIN cabang ON cabang.id = menu.id_cabang";	
 
                                 if($user_level != "Admin"){
                                     if (!empty($cabang)) {
@@ -155,7 +156,6 @@
                     <div class="card-header bg-primary text-white">
                         <i class="fa fa-shopping-cart"></i> Keranjang
                     </div>
-
                     <form method="post" id="AddKasir">
                         <div class="card-body p-2">
                             <div class="form-group row">
@@ -212,29 +212,36 @@
                             <table class="aTable">
                                 <tbody>
                                     <tr>
+                                        <th>Kanal </th>
+                                        <td>
+                                            <select class="form-control" name="id_kanal" id=kanalSelect>
+                                                <?php foreach($listkanal as $r){?>
+                                                <option value="<?= $r->id;?>"><?= $r->kanal;?></option>
+                                                <?php }?>
+                                    
+                                            </select>
+                                          
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Pembayaran </th>
+                                        <td>
+                                            <select class="form-control" name="id_pembayaran">
+                                                <option value="" disabled selected>- pilih -</option>
+                                                <?php foreach($listpembayaran as $r){?>
+                                                <option value="<?= $r->id;?>"><?= $r->pembayaran;?></option>
+                                                <?php }?>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <th>Status </th>
                                         <td>
                                             <select class="form-control" required name="status" id="status">
                                                 <option value="" disabled selected> - Status Pembayaran -</option>
                                                 <option>Lunas</option>
                                                 <option>Debit</option>
-                                                <!-- <option>Debit BCA</option>
-                                                <option>Debit BNI</option>
-                                                <option>Debit Mandiri</option> -->
                                                 <option>Bayar Nanti</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Chanel </th>
-                                        <td>
-                                            <select class="form-control" required name="chanel" id="chanel">
-                                                <option value="" disabled selected> - Pilih Chanel -</option>
-                                                <option>Tunai </option>
-                                                <option>BCA</option>
-                                                <option>BNI</option>
-                                                <option>ShopeePay</option>
-
                                             </select>
                                         </td>
                                     </tr>
@@ -446,6 +453,35 @@
     </div>
 </div>
 <script>
+
+// Attach a change event handler to the #kanalSelect dropdown
+$('#kanalSelect').on('change', function() {
+    // Get the selected value from the dropdown
+    const selectedValue = $(this).val();
+
+    // Send an AJAX request to the dtmenu() function with the selected value
+    $.ajax({
+        url: '<?= base_url('menu/dtmenu');?>',
+        type: 'GET', // Adjust the HTTP method as needed
+        data: {
+            kanal: selectedValue // Pass the selected value as a parameter
+        },
+        dataType: 'html', // Expect HTML response
+        success: function(response) {
+            // Replace the content of a container with the updated content
+            $('#load-data').html(response);
+        },
+        error: function(xhr, status, error) {
+            // Handle errors here
+            console.error(error);
+        }
+    });
+});
+
+
+
+
+
 $('#cart_keranjang').load('<?= base_url('kasir/cart');?>');
 $('#cart_modal').load('<?= base_url('kasir/cart_table');?>');
 

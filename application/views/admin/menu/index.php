@@ -47,6 +47,7 @@
                                 <th>Nama Menu</th>
                                 <th>Harga Pokok</th>
                                 <th>Harga Jual</th>
+                                <th>Kanal</th>
                                 <th>Cabang</th>
                                 <th>Aksi</th>
                             </tr>
@@ -125,6 +126,9 @@ $(document).ready(function() {
             {
                 data: 'harga_jual',
                 render: $.fn.dataTable.render.number(',', '.', 0, 'Rp')
+            },
+            {
+                'data': 'kanal'
             },
             {
                 'data': 'cabang'

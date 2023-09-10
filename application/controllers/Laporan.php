@@ -59,7 +59,6 @@ class Laporan extends CI_Controller
             'urlexcel'      => $urlexcel
         ];
 
-        echo "SELECT SUM(grandtotal) as gr, SUM(grandmodal) as gm, SUM(total_qty) as qty FROM transaksi'.$iswhere";
         $this->load->view('layout/header', $this->data);
         $this->load->view('admin/laporan/index', $this->data);
         $this->load->view('layout/footer', $this->data);
@@ -268,12 +267,16 @@ class Laporan extends CI_Controller
         $isAtrue = $this->input->get('a',true);
         $isBtrue = $this->input->get('b',true);
         if ($this->input->method(true)=='POST'):
-            $query = "SELECT cabang.cabang, customer.hp,login.nama_user, transaksi.created_at,transaksi.grandtotal, transaksi.atas_nama, transaksi.diskon, transaksi.pesanan,transaksi.chanel,transaksi.catatan,transaksi.status,transaksi.customer_id, 
-                      transaksi_produk.* FROM transaksi_produk 
-                      LEFT JOIN transaksi ON transaksi_produk.no_bon=transaksi.no_bon 
+            $query = "SELECT cabang.cabang, customer.hp,login.nama_user, transaksi.created_at,transaksi.grandtotal, transaksi.atas_nama, 
+            transaksi.diskon, transaksi.pesanan,transaksi.catatan,transaksi.status,transaksi.customer_id, kanal.kanal, pembayaran.pembayaran, 
+            transaksi_produk.* 
+                      FROM transaksi_produk 
+                      LEFT JOIN transaksi ON transaksi_produk.no_bon = transaksi.no_bon 
                       LEFT JOIN customer ON transaksi.customer_id = customer.id 
-                      LEFT JOIN login ON transaksi.kasir_id=login.id
-                      LEFT JOIN cabang ON cabang.id=transaksi.id_cabang";
+                      LEFT JOIN login ON transaksi.kasir_id = login.id
+                      LEFT JOIN cabang ON cabang.id = transaksi.id_cabang
+                      LEFT JOIN kanal ON kanal.id = transaksi.id_kanal
+                      LEFT JOIN pembayaran ON pembayaran.id = transaksi.id_pembayaran";
             $search = [
                     'kode_menu',
                     'nama',
@@ -308,12 +311,16 @@ class Laporan extends CI_Controller
     {
         $isAtrue = $this->input->get('a',true);
         $isBtrue = $this->input->get('b',true);
-        $query = "SELECT cabang.cabang,customer.hp, customer.nama, login.nama_user, transaksi.atas_nama,transaksi.diskon,transaksi.catatan,transaksi.grandtotal,transaksi.chanel, transaksi.pesanan,transaksi.status,transaksi.customer_id,
-                  transaksi_produk.* FROM transaksi_produk 
-                  LEFT JOIN transaksi ON transaksi_produk.no_bon=transaksi.no_bon 
+        $query = "SELECT cabang.cabang, customer.hp,login.nama_user, transaksi.created_at,transaksi.grandtotal, transaksi.atas_nama, 
+        transaksi.diskon, transaksi.pesanan,transaksi.catatan,transaksi.status,transaksi.customer_id, kanal.kanal, pembayaran.pembayaran, 
+        transaksi_produk.* 
+                  FROM transaksi_produk 
+                  LEFT JOIN transaksi ON transaksi_produk.no_bon = transaksi.no_bon 
                   LEFT JOIN customer ON transaksi.customer_id = customer.id 
-                  LEFT JOIN login ON transaksi.kasir_id=login.id
-                  LEFT JOIN cabang ON cabang.id=transaksi.id_cabang";
+                  LEFT JOIN login ON transaksi.kasir_id = login.id
+                  LEFT JOIN cabang ON cabang.id = transaksi.id_cabang
+                  LEFT JOIN kanal ON kanal.id = transaksi.id_kanal
+                  LEFT JOIN pembayaran ON pembayaran.id = transaksi.id_pembayaran";
 
         if (!empty($isAtrue)) {
             $a = htmlentities($this->input->get('a',true));

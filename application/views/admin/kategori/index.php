@@ -73,6 +73,7 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
+                                        <th>ID</th>
                                         <th>Nama Kategori</th>
                                         <th>#</th>
                                     </tr>
@@ -84,6 +85,7 @@
                                     ?>
                                     <tr>
                                         <td scope="row"><?= $no;?></td>
+                                        <td><?= $r->id;?></td>
                                         <td><?= $r->kategori;?></td>
                                         <td>
                                             <a href="<?= base_url('kategori?id='.$r->id);?>"

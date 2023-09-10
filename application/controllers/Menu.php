@@ -79,6 +79,7 @@ class Menu extends CI_Controller
                     'gambar' => '-',
                     'created_at' => date('Y-m-d H:i:s'),
                     'id_cabang' => $sheetData[$i]['8'],
+                    'id_kanal' => $sheetData[$i]['9'],
                  ];
                 $this->db->insert("menu", $data);
             }
@@ -96,6 +97,8 @@ class Menu extends CI_Controller
         $halperpage = 12;
         $page       = isset($pageNumber) ? (int)$pageNumber : 1;
         $mulai      = ($page > 1) ? ($page * $halperpage) - $halperpage : 0;
+        $kanal = $this->input->get('kanal', true);
+
         if ($this->input->get('id')) {
             $wr     = ' WHERE id_kategori = '.(int)$this->input->get('id').' ';
         } elseif ($this->input->get('cari')) {
@@ -104,15 +107,17 @@ class Menu extends CI_Controller
             $wr     = '';
         }
         
-        $query      = "SELECT kategori.kategori, cabang.cabang, menu.* FROM menu LEFT JOIN kategori ON menu.id_kategori = kategori.id JOIN cabang ON cabang.id = menu.id_cabang";
+        $query      = "SELECT kategori.kategori, menu.*, kanal.kanal, cabang.cabang, kanal.kanal FROM menu JOIN kategori ON menu.id_kategori = kategori.id JOIN kanal ON menu.id_kanal = kanal.id JOIN cabang ON cabang.id = menu.id_cabang";
         $hasil      = $this->db->query($query." $wr ORDER BY nama ASC LIMIT $mulai, $halperpage")->result();
 
         if ($this->session->userdata('ses_level') != 'Admin'){
             $getCabang = $this->session->userdata('ses_cabang');
-            $filterCabang = " AND cabang.id = $getCabang ";
+            // $filterCabang = " AND cabang.id = $getCabang ";
+            if (empty($kanal)){
+                $kanal = 1;
+            }
+            $filterCabang = " AND cabang.id = $getCabang AND kanal.id = $kanal ";
             $hasil      = $this->db->query($query." $wr $filterCabang ORDER BY nama ASC LIMIT $mulai, $halperpage")->result();
-
-
         }
         
         $this->data['hasil'] = $hasil;
@@ -122,8 +127,8 @@ class Menu extends CI_Controller
     public function data_menu()
     {
         if ($this->input->method(true)=='POST'):
-            $query      = "SELECT kategori.kategori, menu.*, cabang.cabang FROM menu JOIN kategori ON menu.id_kategori = kategori.id JOIN cabang ON menu.id_cabang = cabang.id";
-            $search     = array('kode_menu','kategori.kategori','nama','harga_pokok','harga_jual','keterangan','gambar','cabang.cabang');
+            $query      = "SELECT kategori.kategori, menu.*, kanal.kanal, cabang.cabang FROM menu JOIN kategori ON menu.id_kategori = kategori.id JOIN kanal ON menu.id_kanal = kanal.id JOIN cabang ON cabang.id = menu.id_cabang";
+            $search     = array('kode_menu','kategori.kategori','nama','harga_pokok','harga_jual','keterangan','gambar','kanal','cabang');
             if ((int)$this->input->get('id')) {
                 $where  = array('id_kategori' => (int)$this->input->get('id'));
             } else {
@@ -322,6 +327,7 @@ class Menu extends CI_Controller
             'title_web' => 'Tambah Menu',
             'kode'  	=> 'P000'.$kode_cus,
             'kat'       => $this->db->get('kategori')->result(),
+            'kanal'    => $this->db->get('kanal')->result(),
             'cabang'    => $this->db->get('cabang')->result()
         ];
 
@@ -340,6 +346,7 @@ class Menu extends CI_Controller
         if ($this->form_validation->run() != false) {
             $data = [
                 'id_kategori'   => htmlspecialchars($this->input->post("id_kategori", true), ENT_QUOTES),
+                'id_kanal'     => htmlspecialchars($this->input->post("id_kanal", true), ENT_QUOTES),
                 'id_cabang'     => htmlspecialchars($this->input->post("id_cabang", true), ENT_QUOTES),
                 'kode_menu'     => htmlspecialchars($this->input->post("kode_menu", true), ENT_QUOTES),
                 'nama'          => htmlspecialchars($this->input->post("nama", true), ENT_QUOTES),

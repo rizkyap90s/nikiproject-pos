@@ -59,6 +59,7 @@ if($this->input->get('cetak') == 'print'){?>
     <table id="customers">
         <tr>
             <th>No</th> 
+            <th>Tanggal</th>
             <th>Waktu</th>
             <th>No Bon</th>
             <th>Cabang</th>
@@ -77,18 +78,24 @@ if($this->input->get('cetak') == 'print'){?>
             <th>Diskon</th>
             <th>Grand Total</th>
         </tr>
-        <?php $no =1; $hj = 0; $hb = 0; $qty = 0; foreach($transaksi as $r){?>
+        <?php 
+        $no =1; $hj = 0; $hb = 0; $qty = 0;
+        foreach($transaksi as $r){
+            $created_at = $r->created_at;
+            list($date, $time) = explode(' ', $created_at);
+        ?>
         <tr>
             <td><?= $no;?></td>
-            <td><?= $r->created_at;?></td>
+            <td><?= $date;?></td>
+            <td><?= $time;?></td>
             <td><?= $r->no_bon;?></td>
             <td><?= $r->cabang;?></td>
             <td><?= $r->atas_nama;?></td>
             <td><?= $r->hp;?></td>
             <td><?= $r->nama_user;?></td>
             <td><?= $r->pesanan;?></td>
-            <td><?= $r->chanel;?></td>
-            <td><?= $r->chanel;?></td>
+            <td><?= $r->kanal;?></td>
+            <td><?= $r->pembayaran;?></td>
             <td><?= $r->status;?></td>
             <td><?= $r->catatan;?></td>
             <td><?= $r->nama_menu;?></td>

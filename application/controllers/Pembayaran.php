@@ -83,7 +83,7 @@ class pembayaran extends CI_Controller
             $this->db->delete("pembayaran");
             $this->session->set_flashdata("success", " Berhasil Delete Data ! ");
             redirect(base_url("pembayaran"));
-        } else {
+        } else { 
             $this->session->set_flashdata("failed", " Gagal Delete Data ! " . validation_errors());
             redirect(base_url("pembayaran"));
         }

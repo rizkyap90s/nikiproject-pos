@@ -73,6 +73,7 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
+                                        <th>ID</th>
                                         <th>Nama kanal</th>
                                         <th>#</th>
                                     </tr>
@@ -84,6 +85,7 @@
                                     ?>
                                     <tr>
                                         <td scope="row"><?= $no;?></td>
+                                        <td><?= $r->id;?></td>
                                         <td><?= $r->kanal;?></td>
                                         <td>
                                             <a href="<?= base_url('kanal?id='.$r->id);?>"

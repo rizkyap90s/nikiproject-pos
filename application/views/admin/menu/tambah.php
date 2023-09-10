@@ -48,6 +48,15 @@
                                     placeholder="">
                             </div>
                             <div class="form-group">
+                                <label for="">Kanal</label>
+                                <select class="form-control" name="id_kanal">
+                                    <option value="" disabled selected>- pilih -</option>
+                                    <?php foreach($kanal as $r){?>
+                                    <option value="<?= $r->id;?>"><?= $r->kanal;?></option>
+                                    <?php }?>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label for="">Cabang</label>
                                 <select class="form-control" name="id_cabang">
                                     <option value="" disabled selected>- pilih -</option>

@@ -220,10 +220,10 @@ $(document).ready(function() {
                 }
             },
             {
-                'data': 'chanel'
+                'data': 'kanal'
             },
             {
-                'data': 'chanel'
+                'data': 'pembayaran'
             },
             {
                 "data": "status",
