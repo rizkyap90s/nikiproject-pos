@@ -5,6 +5,8 @@
             <i class="fa fa-plus"> </i> Tambah Menu</a>
         <a href="<?= base_url('menu/import');?>" class="btn btn-success mr-2">
             <i class="fa fa-plus"> </i> Import Menu Excel</a>
+            <a href="<?= base_url('menu/update_by_excel');?>" class="btn btn-warning mr-2">
+            <i class="fa fa-plus"> </i> Update Menu with Excel</a>
         <div class="clearfix"></div>
         <br>
         <?php 
@@ -42,6 +44,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Gambar</th>
+                                <th>ID Menu</th>
                                 <th>Kode Menu</th>
                                 <th>Kategori</th>
                                 <th>Nama Menu</th>
@@ -109,6 +112,9 @@ $(document).ready(function() {
                             '</div>';
                     }
                 }
+            },
+            {
+                'data': 'id'
             },
             {
                 'data': 'kode_menu'

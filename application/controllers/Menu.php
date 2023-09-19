@@ -48,6 +48,17 @@ class Menu extends CI_Controller
         $this->load->view('layout/footer', $this->data);
     }
 
+    public function update_by_excel()
+    {
+        $this->data = [
+            'title_web'  => 'Update',
+        ];
+        
+        $this->load->view('layout/header', $this->data);
+        $this->load->view('admin/menu/update_by_excel', $this->data);
+        $this->load->view('layout/footer', $this->data);
+    }
+
     public function proses_import()
     {
         $file_mimes = array('application/octet-stream', 'application/vnd.ms-excel', 'application/x-csv', 'text/x-csv', 'text/csv', 'application/csv', 'application/excel', 'application/vnd.msexcel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -91,6 +102,71 @@ class Menu extends CI_Controller
             redirect(base_url("menu"));
         }
     }
+    public function proses_import_update()
+{
+    $file_mimes = array('application/octet-stream', 'application/vnd.ms-excel', 'application/x-csv', 'text/x-csv', 'text/csv', 'application/csv', 'application/excel', 'application/vnd.msexcel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    
+    if (isset($_FILES['berkas_excel']['name']) && in_array($_FILES['berkas_excel']['type'], $file_mimes)) {
+        $arr_file = explode('.', $_FILES['berkas_excel']['name']);
+        $extension = end($arr_file);
+        
+        if ('csv' == $extension) {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+        } else {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        }
+        
+        $spreadsheet = $reader->load($_FILES['berkas_excel']['tmp_name']);
+        $sheetData = $spreadsheet->getActiveSheet()->toArray();
+        
+        for ($i = 1; $i < count($sheetData); $i++) {
+            $id = $sheetData[$i]['0']; // Assuming 'id' is in the first column
+            
+            // Check if the 'id' already exists in the database
+            $existingRecord = $this->db->get_where("menu", array('id' => $id))->row_array();
+            
+            if (!empty($existingRecord)) {
+                // Update existing record
+                $data = [
+                    'id_kategori' => $sheetData[$i]['1'],
+                    'nama' => $sheetData[$i]['2'],
+                    'harga_pokok' => $sheetData[$i]['3'],
+                    'harga_jual' => $sheetData[$i]['4'],
+                    'stok' => $sheetData[$i]['5'],
+                    'stok_minim' => $sheetData[$i]['6'],
+                    'keterangan' => $sheetData[$i]['7'],
+                    'id_cabang' => $sheetData[$i]['8'],
+                    'id_kanal' => $sheetData[$i]['9'],
+                ];
+                
+                $this->db->where('id', $id);
+                $this->db->update("menu", $data);
+            } else {
+                // Insert new record
+                $data = [
+                    'id_kategori' => $sheetData[$i]['1'],
+                    'nama' => $sheetData[$i]['2'],
+                    'harga_pokok' => $sheetData[$i]['3'],
+                    'harga_jual' => $sheetData[$i]['4'],
+                    'stok' => $sheetData[$i]['5'],
+                    'stok_minim' => $sheetData[$i]['6'],
+                    'keterangan' => $sheetData[$i]['7'],
+                    'id_cabang' => $sheetData[$i]['8'],
+                    'id_kanal' => $sheetData[$i]['9'],
+                ];
+                
+                $this->db->insert("menu", $data);
+            }
+        }
+
+        $this->session->set_flashdata("success", "Data berhasil diimpor.");
+        redirect(base_url("menu"));
+    } else {
+        $this->session->set_flashdata("failed", "Gagal mengimpor data. Berkas harus berextensi excel.");
+        redirect(base_url("menu"));
+    }
+}
+
     public function dtmenu()
     {
         $pageNumber = htmlspecialchars($this->input->post('pageHome', true), ENT_QUOTES);

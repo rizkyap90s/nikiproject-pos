@@ -172,7 +172,11 @@ Grand Total : Rp<?= number_format($t->grandtotal);?>
 
 Dibayar : Rp<?= number_format($t->dibayar);?>
 
-Kembali : Rp<?= number_format($t->dibayar-$t->grandtotal);?>" data-toggle="modal" data-target="#modelIdWA">
+Kembali : Rp<?= number_format($t->dibayar-$t->grandtotal);?>
+
+Catatan : <?= $t->catatan;?>
+
+" data-toggle="modal" data-target="#modelIdWA">
                                 <i class="fa fa-whatsapp mr-1"></i> Kirim WA
                             </button>
                         </div>

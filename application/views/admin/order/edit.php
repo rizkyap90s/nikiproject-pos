@@ -222,6 +222,13 @@
                                             Rp<?= number_format($t->dibayar-$grd);?>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <th>Catatan</th>
+                                        <th>:</th>
+                                        <td>
+                                            Rp<?= $t->catatan;?>
+                                        </td>
+                                    </tr>
                                 </table>
                             </div>
                         </div>
