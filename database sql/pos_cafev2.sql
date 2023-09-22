@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Aug 19, 2022 at 02:11 PM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 8.1.6
+-- Host: 127.0.0.1
+-- Generation Time: Sep 22, 2023 at 07:38 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,6 +24,17 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `cabang`
+--
+
+CREATE TABLE `cabang` (
+  `id` int(11) NOT NULL,
+  `cabang` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `customer`
 --
 
@@ -35,7 +46,18 @@ CREATE TABLE `customer` (
   `hp` varchar(255) DEFAULT NULL,
   `keterangan` text DEFAULT NULL,
   `created_at` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `kanal`
+--
+
+CREATE TABLE `kanal` (
+  `id` int(11) NOT NULL,
+  `kanal` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -46,14 +68,7 @@ CREATE TABLE `customer` (
 CREATE TABLE `kategori` (
   `id` int(11) NOT NULL,
   `kategori` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `kategori`
---
-
-INSERT INTO `kategori` (`id`, `kategori`) VALUES
-(1, 'Uncategory');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -73,7 +88,7 @@ CREATE TABLE `keranjang` (
   `harga_beli` int(11) NOT NULL,
   `harga_jual` int(11) NOT NULL,
   `login_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -94,7 +109,7 @@ CREATE TABLE `keuangan_lainnya` (
   `year` varchar(255) DEFAULT NULL,
   `keterangan` text DEFAULT NULL,
   `user_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -110,7 +125,7 @@ CREATE TABLE `keuangan_ledger` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -129,16 +144,16 @@ CREATE TABLE `login` (
   `foto` text NOT NULL,
   `level` varchar(255) DEFAULT NULL,
   `tgl_bergabung` varchar(255) NOT NULL,
-  `deleted_at` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `deleted_at` varchar(255) DEFAULT NULL,
+  `id_cabang` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `login`
 --
 
-INSERT INTO `login` (`id`, `user`, `pass`, `nama_user`, `alamat`, `email`, `telepon`, `foto`, `level`, `tgl_bergabung`, `deleted_at`) VALUES
-(5, 'adminkasir', '$2y$10$XUrgFfZ6Y1b0UeaYnYLJbu2lU51cR8r8DwWI.ISmtKYfAqntwCXT2', 'Admin Toko', 'Bekasi', 'dummy@gmail.com', '081234567890', 'user_1636966029.png', 'Admin', '2019-09-11', '2021-07-27 12:25:48'),
-(6, 'kasir', '$2y$10$eHrfr.9BhSJorN1iAqR0BOJ5W1rOnu5DHutn5eDXFMep5A9Fr3V6e', 'Fauzan Falah', 'Bekasi', 'dummy2@gmail.com', '081234567890', 'user_1636966560.png', 'Admin', '2021-10-04', NULL);
+INSERT INTO `login` (`id`, `user`, `pass`, `nama_user`, `alamat`, `email`, `telepon`, `foto`, `level`, `tgl_bergabung`, `deleted_at`, `id_cabang`) VALUES
+(5, 'adminkasir', '$2y$10$XUrgFfZ6Y1b0UeaYnYLJbu2lU51cR8r8DwWI.ISmtKYfAqntwCXT2', 'Admin Toko', 'Bekasi', 'dummy@gmail.com', '081234567890', 'user_1636966029.png', 'Admin', '2019-09-11', '2021-07-27 12:25:48', NULL);
 
 -- --------------------------------------------------------
 
@@ -157,16 +172,10 @@ CREATE TABLE `menu` (
   `stok_minim` int(11) NOT NULL,
   `keterangan` text DEFAULT NULL,
   `gambar` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `menu`
---
-
-INSERT INTO `menu` (`id`, `id_kategori`, `kode_menu`, `nama`, `harga_pokok`, `harga_jual`, `stok`, `stok_minim`, `keterangan`, `gambar`, `created_at`) VALUES
-(1, 1, 'P0001', 'Ayam Bakar', 8000, 15000, 100, 3, 'Percik', '-', '2021-12-16 12:34:06'),
-(3, 1, 'P001', 'Teh', 2000, 3000, 34, 1, NULL, '-', '2022-02-13 21:03:05');
+  `created_at` timestamp NULL DEFAULT NULL,
+  `id_cabang` int(11) DEFAULT NULL,
+  `id_kanal` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -181,7 +190,18 @@ CREATE TABLE `menu_stok` (
   `stok_akhir` int(11) NOT NULL,
   `date` date NOT NULL,
   `periode` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pembayaran`
+--
+
+CREATE TABLE `pembayaran` (
+  `id` int(11) NOT NULL,
+  `pembayaran` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -207,14 +227,14 @@ CREATE TABLE `profil_toko` (
   `voucher` int(11) NOT NULL,
   `diskon` int(11) NOT NULL,
   `user_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `profil_toko`
 --
 
 INSERT INTO `profil_toko` (`id`, `nama_toko`, `alamat_toko`, `telepon_toko`, `email_toko`, `pemilik_toko`, `website_toko`, `tgl_update`, `os`, `print`, `print_default`, `driver`, `footer_struk`, `pajak`, `voucher`, `diskon`, `user_id`) VALUES
-(1, 'Codekop Cafe', 'Bekasi', '081234567890', 'halo@gmail.com', 'Anang', 'sample.com', '2021-03-07 05:25:19', 1, 1, 1, 'logo_1652604576.jpeg', 'TERIMA KASIH\r\nATAS KUNJUNGAN ANDA', 1, 0, 1, 1);
+(1, 'HONABELLE &amp; CO', 'Bekasi', '081234567890', 'halo@gmail.com', 'Anang', 'sample.com', '2021-03-07 05:25:19', 1, 1, 1, 'logo_1652604576.jpeg', 'TERIMA KASIH\r\nATAS KUNJUNGAN ANDA', 1, 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -240,8 +260,12 @@ CREATE TABLE `transaksi` (
   `created_at` timestamp NULL DEFAULT NULL,
   `date` date DEFAULT NULL,
   `periode` varchar(255) DEFAULT NULL,
-  `year` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `year` varchar(255) DEFAULT NULL,
+  `id_cabang` int(11) DEFAULT NULL,
+  `catatan` text DEFAULT NULL,
+  `id_kanal` int(11) DEFAULT NULL,
+  `id_pembayaran` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -264,16 +288,29 @@ CREATE TABLE `transaksi_produk` (
   `date` date DEFAULT NULL,
   `periode` varchar(255) DEFAULT NULL,
   `year` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Indexes for dumped tables
 --
 
 --
+-- Indexes for table `cabang`
+--
+ALTER TABLE `cabang`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_cabang` (`cabang`);
+
+--
 -- Indexes for table `customer`
 --
 ALTER TABLE `customer`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `kanal`
+--
+ALTER TABLE `kanal`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -319,6 +356,12 @@ ALTER TABLE `menu_stok`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `pembayaran`
+--
+ALTER TABLE `pembayaran`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `profil_toko`
 --
 ALTER TABLE `profil_toko`
@@ -341,22 +384,34 @@ ALTER TABLE `transaksi_produk`
 --
 
 --
+-- AUTO_INCREMENT for table `cabang`
+--
+ALTER TABLE `cabang`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `kanal`
+--
+ALTER TABLE `kanal`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `kategori`
 --
 ALTER TABLE `kategori`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `keranjang`
 --
 ALTER TABLE `keranjang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=219;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=272;
 
 --
 -- AUTO_INCREMENT for table `keuangan_lainnya`
@@ -374,19 +429,25 @@ ALTER TABLE `keuangan_ledger`
 -- AUTO_INCREMENT for table `login`
 --
 ALTER TABLE `login`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
 -- AUTO_INCREMENT for table `menu_stok`
 --
 ALTER TABLE `menu_stok`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+
+--
+-- AUTO_INCREMENT for table `pembayaran`
+--
+ALTER TABLE `pembayaran`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `profil_toko`
@@ -398,13 +459,13 @@ ALTER TABLE `profil_toko`
 -- AUTO_INCREMENT for table `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `transaksi_produk`
 --
 ALTER TABLE `transaksi_produk`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=129;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
