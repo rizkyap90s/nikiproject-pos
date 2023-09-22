@@ -174,7 +174,6 @@ class Laporan extends CI_Controller
                             LEFT JOIN keuangan_ledger 
                             ON keuangan_lainnya.no_ledger = keuangan_ledger.no_ledger '.$iswhere)->result()
         ];
-
         $this->load->view('layout/header', $this->data);
         $this->load->view('admin/laporan/cash', $this->data);
         $this->load->view('layout/footer', $this->data);
