@@ -126,7 +126,7 @@ class Kasir extends CI_Controller
             $stok = $row->stok - $qty;
 
             $up_stok[] = array(
-                'id' => $isi['id_menu'],
+                'kode_menu' => $isi['kode_menu'],
                 'stok' => $stok
             );
 
@@ -149,7 +149,7 @@ class Kasir extends CI_Controller
         // update stok
         $total_array = count($up_stok);
         if ($total_array != 0) {
-            $this->db->update_batch('menu', $up_stok, 'id');
+            $this->db->update_batch('menu', $up_stok, 'kode_menu');
         }
 
         // insert penjualan

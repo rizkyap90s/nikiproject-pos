@@ -80,7 +80,7 @@ class Menu extends CI_Controller
                 }
                 $cekid  =  cek_id('menu', 'kode_menu', $sheetData[$i]['1']);
                 $data = [
-                    'kode_menu' => $cekid,
+                    'kode_menu' => $sheetData[$i]['1'],
                     'id_kategori' => $kategori,
                     'nama' => $sheetData[$i]['3'],
                     'harga_pokok' => $sheetData[$i]['4'],
@@ -263,6 +263,7 @@ class Menu extends CI_Controller
                 'nama'          => $data->nama,
                 'stok'          => $data->stok,
                 'stok_minim'    => $data->stok_minim,
+                'kode_menu'    => $data->kode_menu,
             );
             echo json_encode($result);
         } else {
@@ -272,7 +273,8 @@ class Menu extends CI_Controller
 
     public function pasok()
     {
-        $id =  (int)$this->input->post("id"); // parameter yang mau di update
+        $id =  (int)$this->input->post("id");
+        $kode_menu = $this->input->post("kode_menu"); 
             
         $this->form_validation->set_rules("id", "Id", "required");
         $this->form_validation->set_rules("stok", "Stok", "required");
@@ -283,7 +285,8 @@ class Menu extends CI_Controller
                 'stok_awal'  => (int)$this->input->post("stok"),
                 'stok_akhir' => (int)$this->input->post("stoka"),
                 'date'       => date('Y-m-d'),
-                'periode'    => date('Y-m')
+                'periode'    => date('Y-m'),
+                'kode_menu'    => $kode_menu,
             ];
             
             $this->db->insert("menu_stok", $data_r);
@@ -293,10 +296,10 @@ class Menu extends CI_Controller
                 'stok_minim' => (int)$this->input->post("stok_minim"),
             ];
             
-            $this->db->where("id", $id); // ubah id dan postnya
+            $this->db->where("kode_menu", $kode_menu); // ubah id dan postnya
             $this->db->update("menu", $data);
 
-            $this->session->set_flashdata("success", " Berhasil Update Data Stok  ".$this->input->post('nama_menu')." !");
+            $this->session->set_flashdata("success", " Berhasil Update Data Stok  ".$this->input->post('kode_menu')." !");
             redirect(base_url("menu/stok"));
         } else {
             $this->session->set_flashdata("failed", " Gagal Update Data Stok ! ".validation_errors());

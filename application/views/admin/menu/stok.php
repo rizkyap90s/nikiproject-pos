@@ -22,7 +22,7 @@
                             <label for="">Nama Menu</label>
                             <div class="input-group">
                                 <input type="text" class="form-control"
-                                    value="<?= $tipe == 'edit' ? $edit->nama : '' ?>" id="nama_menu" required
+                                    value="<?= $tipe == 'edit' ? $edit->kode_menu : '' ?>" id="nama_menu" required
                                     name="nama_menu" aria-describedby="basic-addon2">
                                 <div class="input-group-append">
                                     <button type="button" id="basic-addon2" class="btn btn-primary btn-md"
@@ -33,6 +33,8 @@
                             </div>
                             <input type="hidden" required value="<?= $tipe == 'edit' ? $edit->id : '' ?>" name="id"
                                 id="kode">
+                                <input type="hidden" required value="<?= $tipe == 'edit' ? $edit->kode_menu : '' ?>" name="kode_menu"
+                                id="kode_menu">
                             <div <?= $tipe == 'edit' ? '' : 'id="stok_jml"' ?>>
                                 <div class="form-group mt-3">
                                     <label for="">Jumlah Stok</label>
@@ -80,7 +82,6 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Gambar</th>
                                 <th>Kode Menu</th>
                                 <th>Kategori</th>
                                 <th>Nama Menu</th>
@@ -89,6 +90,7 @@
                                 <?php }?>
                                 <th>Harga Jual</th>
                                 <th>Cabang</th>
+                                <th>Kanal</th>
                                 <th>Stok</th>
                                 <th>Stok Minim</th>
                                 <th>Aksi</th>
@@ -134,28 +136,28 @@ $(document).ready(function() {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 }
             },
-            {
-                "data": "gambar",
-                "render": function(data, type, row, meta) {
-                    if (data == '-') {
-                        return '<center><i class="fa fa-image fa-3x"></i> <br>' +
-                            '<small><b> Tidak Ada Gambar !</b></small></center>';
-                    } else {
-                        return '<div id="portfolio">' +
-                            '<div class="portfolio-item">' +
-                            '<a href="' + base_url + 'assets/image/produk/' + data +
-                            '" class="portfolio-popup">' +
-                            '<img src="' + base_url + 'assets/image/produk/' + data +
-                            '" style="border-radius:10px 10px 10px 10px;height:70px;width:100%" class="img-fluid"/>' +
-                            '<div class="portfolio-overlay">' +
-                            '' +
-                            '</div>' +
-                            '</a>' +
-                            '</div>' +
-                            '</div>';
-                    }
-                }
-            },
+            // {
+            //     "data": "gambar",
+            //     "render": function(data, type, row, meta) {
+            //         if (data == '-') {
+            //             return '<center><i class="fa fa-image fa-3x"></i> <br>' +
+            //                 '<small><b> Tidak Ada Gambar !</b></small></center>';
+            //         } else {
+            //             return '<div id="portfolio">' +
+            //                 '<div class="portfolio-item">' +
+            //                 '<a href="' + base_url + 'assets/image/produk/' + data +
+            //                 '" class="portfolio-popup">' +
+            //                 '<img src="' + base_url + 'assets/image/produk/' + data +
+            //                 '" style="border-radius:10px 10px 10px 10px;height:70px;width:100%" class="img-fluid"/>' +
+            //                 '<div class="portfolio-overlay">' +
+            //                 '' +
+            //                 '</div>' +
+            //                 '</a>' +
+            //                 '</div>' +
+            //                 '</div>';
+            //         }
+            //     }
+            // },
             {
                 'data': 'kode_menu'
             },
@@ -175,6 +177,9 @@ $(document).ready(function() {
             },
             {
                 'data': 'cabang'
+            },
+            {
+                'data': 'kanal'
             },
             {
                 'data': 'stok'
@@ -238,6 +243,7 @@ $('#example1 tbody').on('click', '.pilih_cek', function() {
                 } else {
                     $('#kode').val(data[0].id);
                     $('#nama_menu').val(data[0].nama);
+                    $('#kode_menu').val(data[0].kode_menu);
                     $('#stok').val(data[0].stok);
                     $('#stoka').val(data[0].stok);
                     $('#stok_minim').val(data[0].stok_minim);
