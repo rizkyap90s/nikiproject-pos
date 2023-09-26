@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <title>Print Struk</title>
     <!-- General CSS Files -->
-    <!-- <?php if($os == '1'){?>
+    <?php if($os == '1'){?>
         <?php if($cetak == '1'){?>
         <style>
             @page { size: 210mm 297mm } /* output size */
@@ -50,7 +50,7 @@
             @media print { body.receipt { width: 210mm } } /* fix for Chrome */
         </style>
         <?php }?>
-    <?php }?> -->
+    <?php }?>
 
     <style>
     html {
