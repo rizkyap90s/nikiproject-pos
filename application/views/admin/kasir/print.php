@@ -220,6 +220,13 @@
                     Rp<?= number_format($t->dibayar-$grd);?>
                 </td>
             </tr>
+            <tr>
+                <td><b>Catatan</b></td>
+                <td>:</td>
+                <td>
+                    <?= $t->catatan;?>
+                </td>
+            </tr>
         </table>
         <p class="doted"></p>
         <center>

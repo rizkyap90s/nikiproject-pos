@@ -203,7 +203,7 @@ class Kasir extends CI_Controller
         $this->load->view('admin/kasir/cetak', $this->data);
     }
 
-    public function printData()
+    public function print()
     {
         $id         = $this->input->post('id', true);
         $os         = $this->input->post('os', true);
