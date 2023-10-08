@@ -39,7 +39,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Level</label>
-                                <select name="level" class="form-control" required="required">
+                                <select name="level" class="form-control" disabled>
                                     <option <?php if($user->level == 'Admin'){echo 'selected';}?>>Admin</option>
                                     <option <?php if($user->level == 'Kasir'){echo 'selected';}?>>Kasir</option>
                                 </select>
@@ -63,8 +63,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Username</label>
-                                <input type="text" class="form-control" value="<?= $user->user;?>" name="user"
-                                    required="required" placeholder="Username">
+                                <input type="text" class="form-control" value="<?= $user->user;?>" name="user" placeholder="Username" disabled>
                             </div>
                             <div class="form-group">
                                 <label>Password <span style="color:red;padding-left:4px;">* opsional</span></label>

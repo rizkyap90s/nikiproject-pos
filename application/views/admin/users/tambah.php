@@ -52,15 +52,16 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Level</label>
-                                        <select name="level" class="form-control" required="required">
+                                        <select name="level" class="form-control" required="required" id="levelSelect">
                                             <option value="" disabled selected>- Level Akun -</option>
                                             <option>Admin</option>
                                             <option>Kasir</option>
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label for="">Cabang</label>
-                                        <select class="form-control" name="id_cabang">
+                                        <label for="">Cabang<small class="text-danger" style="margin-left:5px;">*
+                                            Tidak perlu diisi jika level admin</small></label>
+                                        <select class="form-control" name="id_cabang" id="cabangSelect">
                                             <option value="" disabled selected>- pilih -</option>
                                             <?php foreach($cabang as $r){?>
                                             <option value="<?= $r->id;?>"><?= $r->cabang;?></option>
@@ -107,3 +108,23 @@
 </div>
 </div>
 </div>
+
+<script>
+    // Get references to the select elements
+    var levelSelect = document.getElementById('levelSelect');
+    var cabangSelect = document.getElementById('cabangSelect');
+
+    // Add an event listener to the level select to toggle the cabang select's disabled state
+    levelSelect.addEventListener('change', function() {
+        if (levelSelect.value === 'Admin') {
+            cabangSelect.disabled = true;
+        } else {
+            cabangSelect.disabled = false;
+        }
+    });
+
+    // Initialize the cabang select's disabled state based on the initial level value
+    if (levelSelect.value === 'Admin') {
+        cabangSelect.disabled = true;
+    }
+</script>

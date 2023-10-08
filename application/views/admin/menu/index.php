@@ -5,8 +5,10 @@
             <i class="fa fa-plus"> </i> Tambah Menu</a>
         <a href="<?= base_url('menu/import');?>" class="btn btn-success mr-2">
             <i class="fa fa-plus"> </i> Import Menu Excel</a>
-            <a href="<?= base_url('menu/update_by_excel');?>" class="btn btn-warning mr-2">
+        <a href="<?= base_url('menu/update_by_excel');?>" class="btn btn-warning mr-2">
             <i class="fa fa-plus"> </i> Update Menu with Excel</a>
+        <a href="<?= base_url('menu/deleteAllMenu');?>" class="btn btn-danger mr-2">
+            <i class="fa fa-minus"> </i> Hapus semua menu</a>
         <div class="clearfix"></div>
         <br>
         <?php 

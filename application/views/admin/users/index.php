@@ -69,7 +69,7 @@ $(document).ready(function() {
         'responsive': true,
         "ordering": true, // Set true agar bisa di sorting
         "order": [
-            [0, 'desc']
+            [0, 'asc']
         ], // Default sortingnya berdasarkan kolom / field ke 0 (paling pertama)
         "ajax": {
             "url": "<?= base_url('users/data_users');?>", // URL file untuk proses select datanya
@@ -122,6 +122,12 @@ $(document).ready(function() {
             {
                 "data": "id",
                 "render": function(data, type, row, meta) {
+                    if(row.user == "adminkasir"){
+                        return `<a href="${base_url}users/edit/${row.id}" 
+                                    class="btn btn-primary btn-sm" title="Edit Users" role="button">
+                                    <i class="fa fa-edit"></i>
+                                </a>`;
+                    }
                     return `<a href="${base_url}users/edit/${row.id}" 
                                     class="btn btn-primary btn-sm" title="Edit Users" role="button">
                                     <i class="fa fa-edit"></i>

@@ -601,4 +601,13 @@ class Menu extends CI_Controller
             redirect(base_url("menu"));
         }
     }
+
+    public function deleteAllMenu()
+    {
+    
+        $this->db->empty_table("menu");
+            
+        $this->session->set_flashdata("success", " Berhasil Delete Data ! ");
+        redirect(base_url("menu"));
+    }
 }
