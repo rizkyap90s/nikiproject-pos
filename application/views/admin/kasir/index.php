@@ -76,23 +76,10 @@
                                     $wr = '';
                                     $url = base_url('menu/dtmenu');
                                 }
+                                $getCabang = $this->session->userdata('ses_cabang');
 
+                                $query      = "SELECT kategori.kategori, menu.*, kanal.kanal, cabang.cabang, kanal.kanal FROM menu JOIN kategori ON menu.id_kategori = kategori.id JOIN kanal ON menu.id_kanal = kanal.id JOIN cabang ON cabang.id = menu.id_cabang WHERE menu.id_cabang = $getCabang";
 
-                                $query = "SELECT kategori.kategori, menu.*, kanal.kanal, cabang.cabang FROM menu JOIN kategori ON menu.id_kategori = kategori.id JOIN kanal ON menu.id_kanal = kanal.id JOIN cabang ON cabang.id = menu.id_cabang";	
-
-                                if($user_level != "Admin"){
-                                    if (!empty($cabang)) {
-                                        if (!empty($wr)) {
-                                            $query .= $wr . ' AND ';
-                                        } else {
-                                            $query .= ' WHERE ';
-                                        }
-                                        $query .= 'menu.id_cabang = ' . (int)$cabang;
-                                    } 
-                                }
-                                else if (!empty($wr)) {
-                                    $query .= $wr;
-                                }
                                 
                                 $total = $this->db->query($query)->num_rows();  
                                 $pages = ceil($total / $halperpage);
@@ -215,6 +202,7 @@
                                         <th>Kanal </th>
                                         <td>
                                             <select class="form-control" name="id_kanal" id=kanalSelect>
+                                                <option value="" disabled selected>- pilih -</option>
                                                 <?php foreach($listkanal as $r){?>
                                                 <option value="<?= $r->id;?>"><?= $r->kanal;?></option>
                                                 <?php }?>
@@ -453,6 +441,7 @@
     </div>
 </div>
 <script>
+    
 
 // Attach a change event handler to the #kanalSelect dropdown
 $('#kanalSelect').on('change', function() {
@@ -461,7 +450,7 @@ $('#kanalSelect').on('change', function() {
 
     // Send an AJAX request to the dtmenu() function with the selected value
     $.ajax({
-        url: '<?= base_url('menu/dtmenu');?>',
+        url: '<?= base_url('menu/dtmenu?cari=' . $this->input->get('cari'));?>',
         type: 'GET', // Adjust the HTTP method as needed
         data: {
             kanal: selectedValue // Pass the selected value as a parameter
@@ -477,6 +466,7 @@ $('#kanalSelect').on('change', function() {
         }
     });
 });
+
 
 
 

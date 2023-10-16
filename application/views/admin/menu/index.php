@@ -9,6 +9,8 @@
             <i class="fa fa-plus"> </i> Update Menu with Excel</a>
         <a href="<?= base_url('menu/deleteAllMenu');?>" class="btn btn-danger mr-2">
             <i class="fa fa-minus"> </i> Hapus semua menu</a>
+        <a href="<?= base_url('menu/downloadMenuData');?>" class="btn btn-success mr-2">
+            <i class="fa fa-download"> </i> Unduh data menu</a>
         <div class="clearfix"></div>
         <br>
         <?php 

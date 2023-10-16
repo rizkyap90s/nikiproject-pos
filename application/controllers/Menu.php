@@ -173,28 +173,35 @@ class Menu extends CI_Controller
         $halperpage = 12;
         $page       = isset($pageNumber) ? (int)$pageNumber : 1;
         $mulai      = ($page > 1) ? ($page * $halperpage) - $halperpage : 0;
-        $kanal = $this->input->get('kanal', true);
-
-        if ($this->input->get('id')) {
-            $wr     = ' WHERE id_kategori = '.(int)$this->input->get('id').' ';
-        } elseif ($this->input->get('cari')) {
-            $wr     = ' WHERE kode_menu LIKE "%'.$this->input->get('cari', true).'%" OR nama LIKE "%'.$this->input->get('cari', true).'%" OR kategori.kategori LIKE "%'.$this->input->get('cari', true).'%"';
-        } else {
-            $wr     = '';
-        }
+        $kanal      = $this->input->get('kanal', true);
+        $getCabang = $this->session->userdata('ses_cabang');
+        $getCari =  $this->input->get('cari');
+        $condition = " ";
         
-        $query      = "SELECT kategori.kategori, menu.*, kanal.kanal, cabang.cabang, kanal.kanal FROM menu JOIN kategori ON menu.id_kategori = kategori.id JOIN kanal ON menu.id_kanal = kanal.id JOIN cabang ON cabang.id = menu.id_cabang";
-        $hasil      = $this->db->query($query." $wr ORDER BY nama ASC LIMIT $mulai, $halperpage")->result();
+        $query      = "SELECT kategori.kategori, menu.*, kanal.kanal, cabang.cabang, kanal.kanal FROM menu JOIN kategori ON menu.id_kategori = kategori.id JOIN kanal ON menu.id_kanal = kanal.id JOIN cabang ON cabang.id = menu.id_cabang WHERE cabang.id = $getCabang";
+        if (!empty($getCari)){
+            $condition .=' AND (kode_menu LIKE "%'.$this->input->get('cari', true).'%" OR nama LIKE "%'.$this->input->get('cari', true).'%" OR kategori.kategori LIKE "%'.$this->input->get('cari', true).'%")';
+        }
 
         if ($this->session->userdata('ses_level') != 'Admin'){
-            $getCabang = $this->session->userdata('ses_cabang');
-            // $filterCabang = " AND cabang.id = $getCabang ";
-            if (empty($kanal)){
-                $kanal = 1;
+            if (!empty($kanal)){
+                $condition .= " AND kanal.id = $kanal ";
             }
-            $filterCabang = " AND cabang.id = $getCabang AND kanal.id = $kanal ";
-            $hasil      = $this->db->query($query." $wr $filterCabang ORDER BY nama ASC LIMIT $mulai, $halperpage")->result();
+            
         }
+        else {
+            if ($this->input->get('id')) {
+                $wr     = ' WHERE id_kategori = '.(int)$this->input->get('id').' ';
+            } 
+            elseif ($this->input->get('cari')) {
+                $wr     = ' WHERE kode_menu LIKE "%'.$this->input->get('cari', true).'%" OR nama LIKE "%'.$this->input->get('cari', true).'%" OR kategori.kategori LIKE "%'.$this->input->get('cari', true).'%"';
+            } 
+            else {
+                $wr     = '';
+            }
+        }
+
+        $hasil      = $this->db->query($query. $condition. " ORDER BY nama ASC LIMIT $mulai, $halperpage")->result();
         
         $this->data['hasil'] = $hasil;
         $this->load->view('admin/kasir/menu', $this->data);
@@ -610,4 +617,53 @@ class Menu extends CI_Controller
         $this->session->set_flashdata("success", " Berhasil Delete Data ! ");
         redirect(base_url("menu"));
     }
+
+    // In your model file (e.g., Menu_model.php)
+ // In your model file (e.g., Menu_model.php)
+    public function getMenus() {
+        $query = "SELECT id, id_kategori, nama, harga_pokok, harga_jual, stok, stok_minim, keterangan, id_cabang, id_kanal FROM menu";
+
+        return $this->db->query($query)->result_array();
+    }
+
+
+  // In your controller (e.g., DownloadController.php)
+  public function downloadMenuData() {
+    // Create a PhpSpreadsheet object
+    $spreadsheet = new Spreadsheet();
+
+    // Your database query to retrieve menu data
+    $query = "SELECT id, id_kategori, nama, harga_pokok, harga_jual, stok, stok_minim, keterangan, id_cabang, id_kanal FROM menu";
+    $result = $this->db->query($query)->result_array();
+
+    // Create a worksheet and set headers
+    $worksheet = $spreadsheet->getActiveSheet();
+    $worksheet->fromArray(['ID menu', 'ID Kategori', 'Nama Menu', 'Harga Pokok', 'Harga Jual', 'Stok', 'Stok Minim', 'Keterangan', 'ID Cabang', 'ID Kanal'], NULL, 'A1');
+
+    // Add data rows to the XLSX
+    $row = 2;
+    foreach ($result as $menu) {
+        $col = 'A';
+        foreach ($menu as $value) {
+            $worksheet->setCellValue($col . $row, $value);
+            $col++;
+        }
+        $row++;
+    }
+
+    // Set the filename and content type for XLSX download
+    $filename = 'menu_data.xlsx';
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header('Content-Disposition: attachment; filename="' . $filename . '"');
+    header('Cache-Control: max-age=0');
+
+    // Output the XLSX file
+    $writer = new PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+    $writer->save('php://output');
+}
+
+
+
+
+
 }
