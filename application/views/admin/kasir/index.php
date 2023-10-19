@@ -66,9 +66,10 @@
                         </div>
                         <div class="table-responsive-1 w-100">
                             <?php 
-                                if ($this->input->get('id')) {
+                                $categoryID = $this->input->get('id');
+                                if ($categoryID) {
                                     $wr = ' WHERE id_kategori = ' . (int)$this->input->get('id') . ' ';
-                                    $url = base_url('menu/dtmenu?id=' . (int)$this->input->get('id'));
+                                    $url = base_url('menu/dtmenu?id_kategori=' . (int)$categoryID); // Replace $categoryID with the actual category ID
                                 } else if ($this->input->get('cari')) {
                                     $wr = ' WHERE kode_menu LIKE "%' . $this->input->get('cari') . '%" OR nama LIKE "%' . $this->input->get('cari') . '%"  OR  kanal LIKE "%' . $this->input->get('cari') . '%"   OR kategori.kategori LIKE "%' . $this->input->get('cari') . '%"';
                                     $url = base_url('menu/dtmenu?cari=' . $this->input->get('cari'));
@@ -76,10 +77,8 @@
                                     $wr = '';
                                     $url = base_url('menu/dtmenu');
                                 }
-                                $getCabang = $this->session->userdata('ses_cabang');
 
-                                $query      = "SELECT kategori.kategori, menu.*, kanal.kanal, cabang.cabang, kanal.kanal FROM menu JOIN kategori ON menu.id_kategori = kategori.id JOIN kanal ON menu.id_kanal = kanal.id JOIN cabang ON cabang.id = menu.id_cabang WHERE menu.id_cabang = $getCabang";
-
+                                $query      = "SELECT kategori.kategori, menu.*, kanal.kanal, cabang.cabang, kanal.kanal FROM menu JOIN kategori ON menu.id_kategori = kategori.id JOIN kanal ON menu.id_kanal = kanal.id JOIN cabang ON cabang.id = menu.id_cabang";
                                 
                                 $total = $this->db->query($query)->num_rows();  
                                 $pages = ceil($total / $halperpage);
@@ -450,7 +449,7 @@ $('#kanalSelect').on('change', function() {
 
     // Send an AJAX request to the dtmenu() function with the selected value
     $.ajax({
-        url: '<?= base_url('menu/dtmenu?cari=' . $this->input->get('cari'));?>',
+        url: '<?= base_url('menu/dtmenu?cari=' . $this->input->get('cari') . '&id_kategori=' . $this->input->get('id')); ?>',
         type: 'GET', // Adjust the HTTP method as needed
         data: {
             kanal: selectedValue // Pass the selected value as a parameter

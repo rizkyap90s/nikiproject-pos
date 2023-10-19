@@ -167,45 +167,58 @@ class Menu extends CI_Controller
     }
 }
 
-    public function dtmenu()
-    {
-        $pageNumber = htmlspecialchars($this->input->post('pageHome', true), ENT_QUOTES);
-        $halperpage = 12;
-        $page       = isset($pageNumber) ? (int)$pageNumber : 1;
-        $mulai      = ($page > 1) ? ($page * $halperpage) - $halperpage : 0;
-        $kanal      = $this->input->get('kanal', true);
-        $getCabang = $this->session->userdata('ses_cabang');
-        $getCari =  $this->input->get('cari');
-        $condition = " ";
-        
-        $query      = "SELECT kategori.kategori, menu.*, kanal.kanal, cabang.cabang, kanal.kanal FROM menu JOIN kategori ON menu.id_kategori = kategori.id JOIN kanal ON menu.id_kanal = kanal.id JOIN cabang ON cabang.id = menu.id_cabang WHERE cabang.id = $getCabang";
-        if (!empty($getCari)){
-            $condition .=' AND (kode_menu LIKE "%'.$this->input->get('cari', true).'%" OR nama LIKE "%'.$this->input->get('cari', true).'%" OR kategori.kategori LIKE "%'.$this->input->get('cari', true).'%")';
-        }
+public function dtmenu()
+{
+    $pageNumber = htmlspecialchars($this->input->post('pageHome', true), ENT_QUOTES);
+    $halperpage = 12;
+    $page = isset($pageNumber) ? (int)$pageNumber : 1;
+    $mulai = ($page > 1) ? ($page * $halperpage) - $halperpage : 0;
+    $kanal = $this->input->get('kanal', true);
+    $getCabang = $this->session->userdata('ses_cabang');
+    $getCari = $this->input->get('cari');
+    $kategoriFilter = $this->input->get('id_kategori'); // Get the kategori filter parameter
 
-        if ($this->session->userdata('ses_level') != 'Admin'){
-            if (!empty($kanal)){
-                $condition .= " AND kanal.id = $kanal ";
-            }
-            
-        }
-        else {
-            if ($this->input->get('id')) {
-                $wr     = ' WHERE id_kategori = '.(int)$this->input->get('id').' ';
-            } 
-            elseif ($this->input->get('cari')) {
-                $wr     = ' WHERE kode_menu LIKE "%'.$this->input->get('cari', true).'%" OR nama LIKE "%'.$this->input->get('cari', true).'%" OR kategori.kategori LIKE "%'.$this->input->get('cari', true).'%"';
-            } 
-            else {
-                $wr     = '';
-            }
-        }
+    $condition = [];
+    $where = [];
 
-        $hasil      = $this->db->query($query. $condition. " ORDER BY nama ASC LIMIT $mulai, $halperpage")->result();
-        
-        $this->data['hasil'] = $hasil;
-        $this->load->view('admin/kasir/menu', $this->data);
+    if (!empty($getCabang)) {
+        $condition[] = "menu.id_cabang = $getCabang";
     }
+
+    if (!empty($getCari)) {
+        $searchTerm = $this->db->escape_like_str($this->input->get('cari', true));
+        $condition[] = "(kode_menu LIKE '%$searchTerm%' OR nama LIKE '%$searchTerm%' OR kategori.kategori LIKE '%$searchTerm%')";
+    }
+
+    if (!empty($kanal)) {
+        $condition[] = "kanal.id = $kanal";
+    }
+
+    if (!empty($kategoriFilter)) {
+        $condition[] = "kategori.id = $kategoriFilter"; // Add the kategori filter condition
+    }
+
+    if (!empty($condition)) {
+        $where[] = "WHERE " . implode(" AND ", $condition);
+    }
+
+    $query = "SELECT kategori.kategori, menu.*, kanal.kanal, cabang.cabang, kanal.kanal 
+        FROM menu 
+        JOIN kategori ON menu.id_kategori = kategori.id 
+        JOIN kanal ON menu.id_kanal = kanal.id 
+        JOIN cabang ON cabang.id = menu.id_cabang";
+
+    if (!empty($where)) {
+        $query .= " " . implode(" ", $where);
+    }
+
+    $query .= " ORDER BY nama ASC LIMIT $mulai, $halperpage";
+
+    $hasil = $this->db->query($query)->result();
+
+    $this->data['hasil'] = $hasil;
+    $this->load->view('admin/kasir/menu', $this->data);
+}
 
     public function data_menu()
     {
