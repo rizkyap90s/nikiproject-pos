@@ -19,50 +19,40 @@
                     </div>
                     <div class="card-body p-2">
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-3">
                                 <div class="dropdown mb-3">
-                                    <button class="btn btn-secondary btn-block dropdown-toggle" type="button"
-                                        id="triggerId" data-toggle="dropdown"
-                                        aria-expanded="false">
-                                        <?php 
-                                            $getNm = $this->input->get('nm');
-                                            if(!empty($getNm)){
-                                                echo $this->input->get('nm');
-                                            }else{
-                                                echo 'Semua Kategori';
-                                            }
-                                        ?>
-                                    </button>
-                                    <div class="dropdown-menu" style="width:10%" aria-labelledby="triggerId">
-                                        <?php foreach($kat as $r){?>
-                                        <a class="dropdown-item"
-                                            href="<?= base_url('kasir?id='.$r->id.'&nm='.$r->kategori);?>">
-                                            <?= $r->kategori;?></a>
-                                        <div class="dropdown-divider"></div>
+                                    <select class="form-control" name="kanal" id="kanal">
+                                        <option value="" disabled selected>- pilih kanal -</option>
+                                        <?php foreach($listkanal as $r){?>
+                                        <option value="<?= $r->id;?>"><?= $r->kanal;?></option>
                                         <?php }?>
-                                        <a class="dropdown-item" href="<?= base_url('kasir');?>">
-                                            Semua Kategori</a>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <div class="dropdown mb-3">
+                                    <select class="form-control" name="kategori" id="kategori">
+                                        <option value="" disabled selected>- pilih kategori -</option>
+                                        <?php foreach($kat as $r){?>
+                                        <option value="<?= $r->id;?>"><?= $r->kategori;?></option>
+                                        <?php }?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3 mb-3">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" value="<?=$this->input->get('cari');?>" name="cari" id="cari" placeholder="Cari Menu">
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-primary btn-md" id="findmenu">
+                                            <i class="fa fa-search"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-sm-6 mb-3">
-                                <form method="get" action="">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" value="<?=$this->input->get('cari');?>"
-                                            name="cari" id="cari" placeholder="Cari Menu">
-                                        <div class="input-group-append">
-                                            <!-- Button trigger modal -->
-                                            <button type="submit" class="btn btn-primary btn-md">
-                                                <i class="fa fa-search"></i>
-                                            </button>
-                                            <a href="<?= base_url('kasir');?>" class="btn btn-success btn-md btn-block">
-                                                <i class="fa fa-refresh"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>                           
+                                      
                         </div>
                         <div class="table-responsive-1 w-100">
                             <?php 
@@ -197,7 +187,7 @@
                         <div class="card-footer p-2">
                             <table class="aTable">
                                 <tbody>
-                                    <tr>
+                                    <!-- <tr>
                                         <th>Kanal </th>
                                         <td>
                                             <select class="form-control" name="id_kanal" id=kanalSelect>
@@ -209,7 +199,7 @@
                                             </select>
                                           
                                         </td>
-                                    </tr>
+                                    </tr> -->
                                     <tr>
                                         <th>Pembayaran </th>
                                         <td>
@@ -440,31 +430,31 @@
     </div>
 </div>
 <script>
-    
 
-// Attach a change event handler to the #kanalSelect dropdown
-$('#kanalSelect').on('change', function() {
-    // Get the selected value from the dropdown
-    const selectedValue = $(this).val();
 
-    // Send an AJAX request to the dtmenu() function with the selected value
-    $.ajax({
-        url: '<?= base_url('menu/dtmenu?cari=' . $this->input->get('cari') . '&id_kategori=' . $this->input->get('id')); ?>',
-        type: 'GET', // Adjust the HTTP method as needed
-        data: {
-            kanal: selectedValue // Pass the selected value as a parameter
-        },
-        dataType: 'html', // Expect HTML response
-        success: function(response) {
-            // Replace the content of a container with the updated content
-            $('#load-data').html(response);
-        },
-        error: function(xhr, status, error) {
-            // Handle errors here
-            console.error(error);
-        }
+$(document).ready(function() {
+    $('#findmenu').on('click', function() {
+        // Get the values from the input fields
+        var cari = $('#cari').val();
+        var id_kategori = $('#kategori').val(); // Get the selected ID from the dropdown
+        var id_kanal = $('#kanal').val();
+
+        // Make an AJAX request to fetch the data
+        $.ajax({
+            url: '<?= base_url('menu/dtmenu'); ?>',
+            type: 'GET',
+            data: { cari: cari, id_kategori: id_kategori, kanal: id_kanal },
+            success: function(data) {
+                // Update the container with the fetched data
+                $('#load-data').html(data);
+            },
+            error: function() {
+                // Handle errors if the request fails
+            }
+        });
     });
 });
+
 
 
 

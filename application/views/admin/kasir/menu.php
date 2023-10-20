@@ -14,7 +14,8 @@
         <b>Tidak Ada Gambar </b>
         <br>
         <?php }?>
-        <h6><?= $r->kanal;?></h6> <br> kat: <?= $r->kategori;?> | cab: <?= $r->cabang;?> | 
+        <h6><?= $r->kanal;?></h6> <br> kat: <?= $r->kategori;?> <span style="color: green; font-weight: bold;">|</span>
+ cab: <?= $r->cabang;?>
         <br>
         <b style="font-size:10pt;" class="text-primary"><?= $r->nama;?></b>
         <br>
