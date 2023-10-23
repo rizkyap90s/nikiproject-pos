@@ -71,7 +71,8 @@
                                 <th>Harga Jual</th>
                                 <th>Qty</th>
                                 <th>Jumlah</th>
-                                <th>Diskon</th>
+                                <th>Diskon(%)</th>
+                                <th>Nilai Diskon</th>
                                 <th>Grand Total</th>
                             </tr>
                         </thead>
@@ -261,6 +262,12 @@ $(document).ready(function() {
                 data: 'diskon',
                 "render": function(data, type, row, meta) {
                     return number_format(row.diskon) + '%';
+                }
+            },
+            {
+                data: 'nilai_diskon',
+                "render": function(data, type, row, meta) {
+                    return 'Rp' + number_format((row.harga_jual * row.qty) * row.diskon / 100) + ',-';
                 }
             },
             {

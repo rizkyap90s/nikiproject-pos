@@ -187,10 +187,10 @@
                         <div class="card-footer p-2">
                             <table class="aTable">
                                 <tbody>
-                                    <!-- <tr>
+                                    <tr>
                                         <th>Kanal </th>
                                         <td>
-                                            <select class="form-control" name="id_kanal" id=kanalSelect>
+                                            <select class="form-control" name="id_kanal">
                                                 <option value="" disabled selected>- pilih -</option>
                                                 <?php foreach($listkanal as $r){?>
                                                 <option value="<?= $r->id;?>"><?= $r->kanal;?></option>
@@ -199,7 +199,7 @@
                                             </select>
                                           
                                         </td>
-                                    </tr> -->
+                                    </tr>
                                     <tr>
                                         <th>Pembayaran </th>
                                         <td>
