@@ -268,7 +268,7 @@ class Laporan extends CI_Controller
         if ($this->input->method(true)=='POST'):
             $query = "SELECT cabang.cabang, customer.hp,login.nama_user, transaksi.created_at,transaksi.grandtotal, transaksi.atas_nama, 
             transaksi.diskon, transaksi.pesanan,transaksi.catatan,transaksi.status,transaksi.customer_id, kanal.kanal, pembayaran.pembayaran, 
-            transaksi_produk.* 
+            transaksi.voucher, transaksi_produk.* 
                       FROM transaksi_produk 
                       LEFT JOIN transaksi ON transaksi_produk.no_bon = transaksi.no_bon 
                       LEFT JOIN customer ON transaksi.customer_id = customer.id 
@@ -312,7 +312,7 @@ class Laporan extends CI_Controller
         $isBtrue = $this->input->get('b',true);
         $query = "SELECT cabang.cabang, customer.hp,login.nama_user, transaksi.created_at,transaksi.grandtotal, transaksi.atas_nama, 
         transaksi.diskon, transaksi.pesanan,transaksi.catatan,transaksi.status,transaksi.customer_id, kanal.kanal, pembayaran.pembayaran, 
-        transaksi_produk.* 
+        transaksi.voucher, transaksi_produk.* 
                   FROM transaksi_produk 
                   LEFT JOIN transaksi ON transaksi_produk.no_bon = transaksi.no_bon 
                   LEFT JOIN customer ON transaksi.customer_id = customer.id 

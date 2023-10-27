@@ -76,7 +76,7 @@ if($this->input->get('cetak') == 'print'){?>
             <th>Qty</th>
             <th>Jumlah</th>
             <th>Diskon(%)</th>
-            <th>Nilai Diskon</th>
+            <th>Diskon(Rp)</th>
             <th>Grand Total</th>
         </tr>
         <?php 
@@ -104,7 +104,7 @@ if($this->input->get('cetak') == 'print'){?>
             <td><?= $r->qty;?></td>
             <td><?= $r->harga_jual * $r->qty;?></td>
             <td><?= $r->diskon;?></td>
-            <td><?= ($r->harga_jual * $r->qty) * ($r->diskon / 100);?></td>
+            <td><?= $r->voucher;?></td>
             <td><?= $r->grandtotal;?></td>
         </tr>
         <?php $no++; $hj += $r->harga_jual * $r->qty; $hb += $r->harga_beli * $r->qty; $qty += $r->qty; }?>

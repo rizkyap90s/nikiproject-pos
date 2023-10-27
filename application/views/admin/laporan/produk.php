@@ -72,7 +72,7 @@
                                 <th>Qty</th>
                                 <th>Jumlah</th>
                                 <th>Diskon(%)</th>
-                                <th>Nilai Diskon</th>
+                                <th>Diskon(Rp)</th>
                                 <th>Grand Total</th>
                             </tr>
                         </thead>
@@ -265,9 +265,9 @@ $(document).ready(function() {
                 }
             },
             {
-                data: 'nilai_diskon',
+                data: 'voucher',
                 "render": function(data, type, row, meta) {
-                    return 'Rp' + number_format((row.harga_jual * row.qty) * row.diskon / 100) + ',-';
+                    return 'Rp' + number_format(row.voucher);
                 }
             },
             {

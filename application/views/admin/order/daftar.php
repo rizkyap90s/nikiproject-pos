@@ -74,7 +74,7 @@
 <?php
     $jn = $this->input->get('jenis');
     $tgl =  $this->input->get('tgl');
-    if(!empty($jenis)){
+    if(!empty($jn)){
         if($jn == 1){
             if(!empty($tgl)){
                 $url = base_url('order/data_order?jenis=1&tgl='.$this->input->get('tgl'));
